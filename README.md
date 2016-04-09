@@ -6,17 +6,17 @@ Registering a factory:
 ```java
 ServiceController serviceController = new ServiceController();
 
-serviceController.register( new ThriftServiceDiscoveryFactory<>( <ThriftContract>.Iface.class, <ThriftContract>.Client.class, "serviceId" ) );
+ThriftServiceDiscoveryFactory< <ThriftContract>.Iface, <ThriftContract>.Client> factory =
+  new ThriftServiceDiscoveryFactory<>( <ThriftContract>.Iface.class, <ThriftContract>.Client.class, "serviceId" );
+
+serviceController.register( factory );
 ```
 
 if ServiceNodeBalancer or ServiceNodeDiscovery is not registered with Java's ServiceLoader:
 
 ```java
-ThriftServiceDiscoveryFactory< <ThriftContract>.Iface, <ThriftContract>.Client> factory = new ThriftServiceDiscoveryFactory<>( <ThriftContract>.Iface.class, <ThriftContract>.Client.class, "serviceId" );
 factory.setServiceNodeDiscovery( serviceNodeDiscovery );
 factory.setServiceNodeBalancer( serviceNodeBalancer );
-
-serviceController.register( factory );
 ```
 
 Note that the factory, the service discovery and the balancer can all be registered automatically with Java's ServiceLoader.
@@ -26,7 +26,8 @@ Usage example:
 ```java
 serviceController.find( <ThriftContract>.Iface.class ).ifPresent(serviceExecutor -> {
   try {
-    < RESULT > result = serviceExecutor.execute( iface -> iface.< METHOD >( < METHOD_PARAMETERS > ) );
+    < RESULT > result = serviceExecutor.execute(
+        iface -> iface.< METHOD >( < METHOD_PARAMETERS > ) );
     // ...
   } catch (Exception e) {
     e.printStackTrace();
