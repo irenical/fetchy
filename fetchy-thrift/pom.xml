@@ -13,6 +13,23 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
+  <name>Fetchy Thrift Service Factory</name>
+  <description>Fetchy Thrift - Thrift Service Factory Implementation</description>
+
+  <scm>
+    <connection>scm:git:git@github.com:irenical/fetchy.git</connection>
+    <developerConnection>scm:git:git@github.com:irenical/fetchy.git</developerConnection>
+    <url>git@github.com:irenical/fetchy.git</url>
+  </scm>
+
+  <developers>
+    <developer>
+      <name>Diogo Neves</name>
+      <email>diogo.sousa.neves@gmail.com</email>
+    </developer>
+  </developers>
+
+
   <dependencies>
     <dependency>
       <groupId>org.irenical.fetchy</groupId>
