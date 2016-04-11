@@ -6,8 +6,8 @@ Registering a factory:
 ```java
 ServiceController serviceController = new ServiceController();
 
-ThriftServiceDiscoveryFactory< <ThriftContract>.Iface, <ThriftContract>.Client> factory =
-  new ThriftServiceDiscoveryFactory<>( <ThriftContract>.Iface.class, <ThriftContract>.Client.class, "serviceId" );
+ThriftServiceDiscoveryFactory< < THRIFT_CONTRACT >.Iface, < THRIFT_CONTRACT >.Client> factory =
+  new ThriftServiceDiscoveryFactory<>( < THRIFT_CONTRACT >.Iface.class, < THRIFT_CONTRACT >.Client.class, "serviceId" );
 
 serviceController.register( factory );
 ```
@@ -24,7 +24,7 @@ Note that the factory, the service discovery and the balancer can all be registe
 
 Usage example:
 ```java
-serviceController.find( <ThriftContract>.Iface.class ).ifPresent(serviceExecutor -> {
+serviceController.find( < THRIFT_CONTRACT >.Iface.class ).ifPresent(serviceExecutor -> {
   try {
     < RESULT > result = serviceExecutor.execute(
         iface -> iface.< METHOD >( < METHOD_PARAMETERS > ) );
@@ -42,17 +42,17 @@ To use Fetchy you need both the API and factories. ServiceNodeBalancer and Servi
 <dependency>
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-api</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
 </dependency>
 
 <dependency>
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-thrift</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
 </dependency>
 <dependency>
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-consul</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
 </dependency>
 ```
