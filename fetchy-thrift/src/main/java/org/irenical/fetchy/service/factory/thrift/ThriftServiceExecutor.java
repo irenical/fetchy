@@ -12,7 +12,7 @@ import org.irenical.fetchy.service.factory.ServiceDiscoveryExecutor;
 
 import java.lang.reflect.Constructor;
 
-public class ThriftServiceExecutor< IFACE, CLIENT extends TServiceClient > extends ServiceDiscoveryExecutor< IFACE, CLIENT > {
+public class ThriftServiceExecutor<IFACE,CLIENT extends IFACE> extends ServiceDiscoveryExecutor<IFACE,CLIENT> {
 
     private final Class< CLIENT > clientType;
 
@@ -31,8 +31,12 @@ public class ThriftServiceExecutor< IFACE, CLIENT extends TServiceClient > exten
     }
 
     @Override
-    protected void onBeforeExecute(CLIENT client) throws Exception {
-        open( client );
+    protected void onBeforeExecute(CLIENT client) {
+        try {
+            open( client );
+        } catch (TTransportException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -42,15 +46,15 @@ public class ThriftServiceExecutor< IFACE, CLIENT extends TServiceClient > exten
 
     private void open( CLIENT clientInstance ) throws TTransportException {
         if ( clientInstance != null ) {
-            open(clientInstance.getInputProtocol());
-            open(clientInstance.getOutputProtocol());
+            open(((TServiceClient) clientInstance).getInputProtocol());
+            open(((TServiceClient) clientInstance).getOutputProtocol());
         }
     }
 
     private void close( CLIENT clientInstance ) {
         if ( clientInstance != null ) {
-            close(clientInstance.getInputProtocol());
-            close(clientInstance.getOutputProtocol());
+            close(((TServiceClient) clientInstance).getInputProtocol());
+            close(((TServiceClient) clientInstance).getOutputProtocol());
         }
     }
 

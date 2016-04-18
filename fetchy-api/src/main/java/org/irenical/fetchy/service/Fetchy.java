@@ -9,13 +9,13 @@ import java.util.Optional;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ServiceController implements LifeCycle {
+public class Fetchy implements LifeCycle {
 
-  private static final Logger LOG = LoggerFactory.getLogger(ServiceController.class);
+  private static final Logger LOG = LoggerFactory.getLogger(Fetchy.class);
 
   private Map<Class<?>, ServiceFactory<?>> factories;
 
-  private Map<Class<?>, ServiceExecutor< ? > > services;
+  private Map<Class<?>, Stub< ? > > services;
 
   private void loadFactories() {
     for (ServiceFactory< ? > factory : ServiceLoader.load(ServiceFactory.class)) {
@@ -43,13 +43,13 @@ public class ServiceController implements LifeCycle {
   }
 
   @SuppressWarnings("unchecked")
-  public < SERVICE > Optional< ServiceExecutor< SERVICE > > find( Class< SERVICE > serviceClass ) {
-    ServiceExecutor< SERVICE > serviceExecutor = (ServiceExecutor<SERVICE>) services.get(serviceClass);
+  public < SERVICE > Optional< Stub< SERVICE > > find( Class< SERVICE > serviceClass ) {
+    Stub< SERVICE > serviceExecutor = (Stub<SERVICE>) services.get(serviceClass);
     if ( serviceExecutor == null ) {
       ServiceFactory<SERVICE> factory = (ServiceFactory<SERVICE>) factories.get(serviceClass);
       if (factory != null) {
         synchronized (factory) { // ensure only one service gets instantiated
-          serviceExecutor = (ServiceExecutor<SERVICE>) services.get(serviceClass);
+          serviceExecutor = (Stub<SERVICE>) services.get(serviceClass);
           if (serviceExecutor == null) {
             serviceExecutor = factory.createService();
             serviceExecutor.start();

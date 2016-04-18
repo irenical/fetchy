@@ -5,17 +5,17 @@ import org.irenical.lifecycle.LifeCycle;
 /**
  * @param <IFACE>   the service interface
  */
-public interface ServiceExecutor< IFACE > extends LifeCycle {
+public interface Stub<IFACE> extends LifeCycle {
 
     /**
      * @param <IFACE>   the service interface
      * @param <OUTPUT>  the expected output type
      */
     @FunctionalInterface
-    interface ServiceCall< IFACE, OUTPUT > {
-        OUTPUT call(IFACE client) throws Exception;
+    interface ServiceCall<IFACE,OUTPUT,ERROR extends Exception> {
+        OUTPUT call(IFACE client) throws ERROR;
     }
 
-    < OUTPUT > OUTPUT execute(ServiceCall<IFACE, OUTPUT> callable) throws Exception;
+    <OUTPUT,ERROR extends Exception> OUTPUT call(ServiceCall<IFACE,OUTPUT,ERROR> callable) throws ERROR;
 
 }

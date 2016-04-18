@@ -2,12 +2,13 @@ package org.irenical.fetchy.service.factory.rest;
 
 import org.irenical.fetchy.node.ServiceNode;
 import org.irenical.fetchy.service.factory.ServiceDiscoveryExecutor;
+
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
 
-public class RESTServiceExecutor< IFACE > extends ServiceDiscoveryExecutor< IFACE, IFACE > {
+public class RESTServiceExecutor<IFACE> extends ServiceDiscoveryExecutor<IFACE,IFACE> {
 
     private final Class< IFACE > ifaceClass;
 
@@ -30,13 +31,11 @@ public class RESTServiceExecutor< IFACE > extends ServiceDiscoveryExecutor< IFAC
     }
 
     @Override
-    protected void onBeforeExecute(IFACE iface) throws Exception {
-
+    protected void onBeforeExecute(IFACE iface) {
     }
 
     @Override
     protected void onAfterExecute(IFACE iface) {
-
     }
 
 }

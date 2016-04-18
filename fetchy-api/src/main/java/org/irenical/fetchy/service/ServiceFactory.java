@@ -9,6 +9,6 @@ public interface ServiceFactory< SERVICE > {
 
   Class< SERVICE > getServiceInterface();
 
-  ServiceExecutor< SERVICE > createService();
+  Stub< SERVICE > createService();
 
 }
