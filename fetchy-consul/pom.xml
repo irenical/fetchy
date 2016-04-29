@@ -10,7 +10,7 @@
 
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-consul</artifactId>
-  <version>0.0.4-SNAPSHOT</version>
+  <version>0.0.4</version>
   <packaging>jar</packaging>
 
   <name>Fetchy Consul Service Discovery</name>
@@ -34,13 +34,13 @@
     <dependency>
       <groupId>org.irenical.fetchy</groupId>
       <artifactId>fetchy-api</artifactId>
-      <version>0.0.4-SNAPSHOT</version>
+      <version>0.0.4</version>
     </dependency>
 
     <dependency>
       <groupId>org.irenical.jindy</groupId>
       <artifactId>jindy-api</artifactId>
-      <version>1.4.2</version>
+      <version>1.5.0</version>
     </dependency>
 
     <dependency>
