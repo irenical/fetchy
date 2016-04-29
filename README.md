@@ -59,7 +59,7 @@ To use Fetchy you need both the API and factories. ServiceNodeBalancer and Servi
 </dependency>
 ```
 
-[maven]:http://search.maven.org/#search|gav|1|g:"org.irenical.fetchy"%20AND%20a:"fetchy"
+[maven]:http://search.maven.org/#search|gav|1|g:"org.irenical.fetchy"%20AND%20a:"fetchy-api"
 [maven img]:https://maven-badges.herokuapp.com/maven-central/org.irenical.fetchy/fetchy/badge.svg
 
 [travis]:https://travis-ci.org/irenical/fetchy
