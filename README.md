@@ -1,3 +1,5 @@
+[![][maven img]][maven]
+[![][travis img]][travis]
 
 Fetchy is a service discovery API and libraries for Java
 
@@ -24,10 +26,10 @@ Note that the factory, the service discovery and the balancer can all be registe
 
 Usage example:
 ```java
-fetchy.find( < THRIFT_CONTRACT >.Iface.class ).ifPresent(serviceExecutor -> {
+fetchy.find( <THRIFT_CONTRACT>.Iface.class ).ifPresent(serviceExecutor -> {
   try {
     < RESULT > result = serviceExecutor.execute(
-        iface -> iface.< METHOD >( < METHOD_PARAMETERS > ) );
+        iface -> iface.<METHOD>( < METHOD_PARAMETERS > ) );
     // ...
   } catch (Exception e) {
     e.printStackTrace();
@@ -42,17 +44,23 @@ To use Fetchy you need both the API and factories. ServiceNodeBalancer and Servi
 <dependency>
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-api</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
 </dependency>
 
 <dependency>
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-thrift</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
 </dependency>
 <dependency>
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-consul</artifactId>
-  <version>0.0.3</version>
+  <version>0.0.4</version>
 </dependency>
 ```
+
+[maven]:http://search.maven.org/#search|gav|1|g:"org.irenical.fetchy"%20AND%20a:"fetchy"
+[maven img]:https://maven-badges.herokuapp.com/maven-central/org.irenical.fetchy/fetchy/badge.svg
+
+[travis]:https://travis-ci.org/irenical/fetchy
+[travis img]:https://travis-ci.org/irenical/fetchy.svg?branch=master
