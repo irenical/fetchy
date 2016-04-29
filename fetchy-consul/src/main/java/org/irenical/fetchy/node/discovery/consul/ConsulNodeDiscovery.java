@@ -1,19 +1,20 @@
 package org.irenical.fetchy.node.discovery.consul;
 
-import com.ecwid.consul.v1.ConsulClient;
-import com.ecwid.consul.v1.Response;
-import com.ecwid.consul.v1.agent.model.Self;
-import com.ecwid.consul.v1.health.model.Check;
-import com.ecwid.consul.v1.health.model.HealthService;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import org.irenical.fetchy.node.ServiceNode;
 import org.irenical.fetchy.node.discovery.ServiceNodeDiscovery;
 import org.irenical.jindy.Config;
 import org.irenical.jindy.ConfigFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import com.ecwid.consul.v1.ConsulClient;
+import com.ecwid.consul.v1.Response;
+import com.ecwid.consul.v1.agent.model.Self;
+import com.ecwid.consul.v1.health.model.Check;
+import com.ecwid.consul.v1.health.model.HealthService;
 
 public class ConsulNodeDiscovery implements ServiceNodeDiscovery {
 
@@ -94,7 +95,7 @@ public class ConsulNodeDiscovery implements ServiceNodeDiscovery {
         Integer port = consulService.getPort();
 
         ServiceNode serviceNode = new ServiceNode();
-        serviceNode.setAddress( coalesce( serviceNode.getAddress(), consulNode.getAddress() ) );
+        serviceNode.setAddress( coalesce( consulService.getAddress(), consulNode.getAddress() ) );
         serviceNode.setPort( (port == null || port == 0 ? null : port) );
         serviceNode.setNode( consulNode.getNode() );
         serviceNode.setStatus( getServiceStatus( healthService, consulService.getId() ) );
@@ -114,8 +115,9 @@ public class ConsulNodeDiscovery implements ServiceNodeDiscovery {
                             return ServiceNode.ServiceStatus.HEALTHY;
                         case WARNING:
                             return ServiceNode.ServiceStatus.WARNING;
+                        default:
+                            return ServiceNode.ServiceStatus.UNKNOWN;
                     }
-                    return ServiceNode.ServiceStatus.UNKNOWN;
                 })
                 .collect( Collectors.collectingAndThen(
                         Collectors.toList(),

@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.irenical.fetchy</groupId>
+  <artifactId>jindy</artifactId>
+  <version>0.0.4</version>
+
+  <name>Fetchy</name>
+
+  <packaging>pom</packaging>
+
+  <scm>
+    <connection>scm:git:git@github.com:irenical/fetchy.git</connection>
+    <developerConnection>scm:git:git@github.com:irenical/fetchy.git</developerConnection>
+    <url>git@github.com:irenical/fetchy.git</url>
+  </scm>
+
+  <developers>
+    <developer>
+      <name>Tiago Simão</name>
+      <email>tiagosimao@gmail.com</email>
+    </developer>
+  </developers>
+
+  <modules>
+    <module>fetchy-api</module>
+    <module>fetchy-consul</module>
+    <module>fetchy-rest</module>
+    <module>fetchy-soap</module>
+    <module>fetchy-thrift</module>
+  </modules>
+
+</project>

@@ -15,7 +15,15 @@ public interface Stub<IFACE> extends LifeCycle {
     interface ServiceCall<IFACE,OUTPUT,ERROR extends Exception> {
         OUTPUT call(IFACE client) throws ERROR;
     }
+    
+    /**
+     * @param <IFACE>   the service interface
+     */
+    @FunctionalInterface
+    interface ServiceRun<IFACE,ERROR extends Exception> {
+        void run(IFACE client) throws ERROR;
+    }
 
     <OUTPUT,ERROR extends Exception> OUTPUT call(ServiceCall<IFACE,OUTPUT,ERROR> callable) throws ERROR;
-
+    
 }
