@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.xml.ws.Service;
 import javax.xml.ws.WebServiceFeature;
@@ -36,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * <ul>
  * <li>{@code service/example/url} - URL of the remote WSDL for the service being initialized. String type. Required.</li>
  * <li>{@code service/example/filters} - Comma separated list of filter class names to load. Fully qualified names are
- * required for filters outside the {@code pt.impresa.client.filters}
+ * required for filters outside the {@code org.irenical.fetchy.service.factory.soap}
  * package. String type. Optional.</li>
  * </ul>
  *
@@ -49,8 +48,7 @@ public class ServiceClient<ENDPOINT extends Service, PORT> {
     
     private final Logger LOG = LoggerFactory.getLogger(ServiceClient.class);
     
-    public static final String JNDI_PREPEND = "java:comp/env/service/";
-    public static final String DEFAULT_FILTER_PACKAGE = "pt.impresa.service.client.filters.";
+    public static final String DEFAULT_FILTER_PACKAGE = "org.irenical.fetchy.service.factory.soap.";
 
     private final Class<ENDPOINT> endpointClass;
     private final Class<PORT> portClass;
@@ -70,23 +68,6 @@ public class ServiceClient<ENDPOINT extends Service, PORT> {
 
         this.soapURI = soapURL;
         if(filters != null) this.serviceClientFilters = Arrays.asList(filters);
-        initEndpoint();
-    }
-
-    public ServiceClient(Class<ENDPOINT> endpointClass, Class<PORT> portClass, String jndiContextString, URI fallbackSOAPURL, ServiceClientFilter... filters) {
-        this.endpointClass = endpointClass;
-        this.portClass = portClass;
-
-        Context ctx;
-        try {
-            ctx = (Context) new InitialContext().lookup(JNDI_PREPEND + jndiContextString);
-            this.jndiContext = ctx;
-            initFiltersFromJNDI();
-        } catch(NamingException e) {
-            LOG.info("JNDI context " + JNDI_PREPEND + jndiContextString + " not found, using " + fallbackSOAPURL);
-            this.soapURI = fallbackSOAPURL;
-            if(filters != null) this.serviceClientFilters = Arrays.asList(filters);
-        }
         initEndpoint();
     }
 
