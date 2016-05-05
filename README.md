@@ -44,18 +44,18 @@ To use Fetchy you need both the API and factories. ServiceNodeBalancer and Servi
 <dependency>
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-api</artifactId>
-  <version>0.0.4</version>
+  <version>0.0.5</version>
 </dependency>
 
 <dependency>
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-thrift</artifactId>
-  <version>0.0.4</version>
+  <version>0.0.5</version>
 </dependency>
 <dependency>
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-consul</artifactId>
-  <version>0.0.4</version>
+  <version>0.0.5</version>
 </dependency>
 ```
 
