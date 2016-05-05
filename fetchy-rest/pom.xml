@@ -10,7 +10,7 @@
 
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-rest</artifactId>
-  <version>0.0.5-SNAPSHOT</version>
+  <version>0.0.5</version>
   <packaging>jar</packaging>
 
   <name>Fetchy REST Service Factory</name>
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>org.irenical.fetchy</groupId>
       <artifactId>fetchy-api</artifactId>
-      <version>0.0.5-SNAPSHOT</version>
+      <version>0.0.5</version>
     </dependency>
 
     <dependency>
