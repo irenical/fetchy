@@ -5,9 +5,9 @@ import org.irenical.fetchy.node.discovery.ServiceNodeDiscovery;
 
 public abstract class ServiceDiscoveryFactory< IFACE > extends BaseServiceFactory< IFACE > {
 
-    private ServiceNodeDiscovery serviceNodeDiscovery;
+    private ServiceNodeDiscovery serviceNodeDiscovery = null;
 
-    private ServiceNodeBalancer serviceNodeBalancer;
+    private ServiceNodeBalancer serviceNodeBalancer = null;
 
 
     public ServiceDiscoveryFactory(Class<IFACE> serviceInterface) {

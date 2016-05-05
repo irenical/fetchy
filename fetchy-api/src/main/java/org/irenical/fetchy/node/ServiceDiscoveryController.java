@@ -66,11 +66,15 @@ public class ServiceDiscoveryController implements LifeCycle {
     }
 
     private Optional< ServiceNode > chooseDefault( List< ServiceNode > nodes ) {
-//        TODO : default balancer implementation
-        return Optional.empty();
+        return nodes == null || nodes.isEmpty() ? Optional.empty() : Optional.of( nodes.get( 0 ) );
     }
 
     private void loadServiceDiscovery() {
+//        custom node discovery implementation is already set - skip
+        if ( serviceNodeDiscovery != null ) {
+            return ;
+        }
+
         List< ServiceNodeDiscovery > locators = new LinkedList<>();
 
         ServiceLoader<ServiceNodeDiscovery> serviceNodeLocators = ServiceLoader.load(ServiceNodeDiscovery.class);
@@ -89,6 +93,11 @@ public class ServiceDiscoveryController implements LifeCycle {
     }
 
     private void loadServiceBalancer() {
+//        custom node balancer implementation is already set - skip
+        if ( nodeBalancer != null ) {
+            return ;
+        }
+
         List<ServiceNodeBalancer> balancers = new LinkedList<>();
 
         for (ServiceNodeBalancer serviceNodeBalancer : ServiceLoader.load(ServiceNodeBalancer.class)) {

@@ -1,7 +1,5 @@
 package org.irenical.fetchy.service.factory.thrift;
 
-import org.irenical.fetchy.node.balancer.ServiceNodeBalancer;
-import org.irenical.fetchy.node.discovery.ServiceNodeDiscovery;
 import org.irenical.fetchy.service.Stub;
 import org.irenical.fetchy.service.factory.ServiceDiscoveryFactory;
 
@@ -22,14 +20,9 @@ public class ThriftServiceDiscoveryFactory<IFACE, CLIENT extends IFACE> extends 
     public Stub<IFACE> createService() {
         ThriftServiceExecutor<IFACE, CLIENT> serviceExecutor = new ThriftServiceExecutor<>(clientClass, serviceId);
 
-        ServiceNodeDiscovery serviceNodeLocator = getServiceNodeDiscovery();
-        if (serviceNodeLocator != null) {
-            serviceExecutor.setServiceNodeDiscovery(serviceNodeLocator);
-        }
-        ServiceNodeBalancer serviceNodeBalancer = getServiceNodeBalancer();
-        if (serviceNodeBalancer != null) {
-            serviceExecutor.setServiceNodeBalancer(serviceNodeBalancer);
-        }
+        serviceExecutor.setServiceNodeDiscovery( getServiceNodeDiscovery() );
+        serviceExecutor.setServiceNodeBalancer( getServiceNodeBalancer() );
+
         return serviceExecutor;
     }
 
