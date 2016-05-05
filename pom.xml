@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.irenical.fetchy</groupId>
-  <artifactId>jindy</artifactId>
+  <artifactId>fetchy</artifactId>
   <version>0.0.4</version>
 
   <name>Fetchy</name>
@@ -20,6 +20,10 @@
     <developer>
       <name>Tiago Simão</name>
       <email>tiagosimao@gmail.com</email>
+    </developer>
+    <developer>
+      <name>Diogo Neves</name>
+      <email>diogo.sousa.neves@gmail.com</email>
     </developer>
   </developers>
 
