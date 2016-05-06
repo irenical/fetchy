@@ -10,7 +10,7 @@
 
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-soap</artifactId>
-  <version>0.0.5</version>
+  <version>0.0.6</version>
   <packaging>jar</packaging>
 
   <scm>
@@ -23,7 +23,7 @@
     <dependency>
       <groupId>org.irenical.fetchy</groupId>
       <artifactId>fetchy-api</artifactId>
-      <version>0.0.5</version>
+      <version>0.0.6</version>
     </dependency>
     <dependency>
       <groupId>org.irenical.jindy</groupId>
