@@ -21,7 +21,7 @@ public class Fetchy implements LifeCycle {
     for (ServiceFactory< ? > factory : ServiceLoader.load(ServiceFactory.class)) {
       try {
         register(factory);
-      } catch (ServiceAlreadyExistsException e) {
+      } catch (Exception e) {
         LOG.error("Error registering service, ignoring", e);
       }
     }

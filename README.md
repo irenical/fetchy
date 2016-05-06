@@ -26,9 +26,9 @@ Note that the factory, the service discovery and the balancer can all be registe
 
 Usage example:
 ```java
-fetchy.find( <THRIFT_CONTRACT>.Iface.class ).ifPresent(serviceExecutor -> {
+fetchy.find( <THRIFT_CONTRACT>.Iface.class ).ifPresent( stub -> {
   try {
-    < RESULT > result = serviceExecutor.execute(
+    < RESULT > result = stub.call(
         iface -> iface.<METHOD>( < METHOD_PARAMETERS > ) );
     // ...
   } catch (Exception e) {

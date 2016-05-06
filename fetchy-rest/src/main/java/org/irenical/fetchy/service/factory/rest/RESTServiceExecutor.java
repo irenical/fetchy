@@ -2,7 +2,6 @@ package org.irenical.fetchy.service.factory.rest;
 
 import org.irenical.fetchy.node.ServiceNode;
 import org.irenical.fetchy.service.factory.ServiceDiscoveryExecutor;
-
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
@@ -12,7 +11,6 @@ public class RESTServiceExecutor<IFACE> extends ServiceDiscoveryExecutor<IFACE,I
 
     private final Class< IFACE > ifaceClass;
 
-
     public RESTServiceExecutor(Class< IFACE > ifaceClass, String serviceId) {
         super( serviceId );
         this.ifaceClass = ifaceClass;
@@ -20,7 +18,6 @@ public class RESTServiceExecutor<IFACE> extends ServiceDiscoveryExecutor<IFACE,I
 
     @Override
     protected IFACE newInstance(ServiceNode serviceNode) throws Exception {
-//        TODO : can we cache the client?
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( serviceNode.getAddress() )
                 .addCallAdapterFactory( RxJavaCallAdapterFactory.create() )
