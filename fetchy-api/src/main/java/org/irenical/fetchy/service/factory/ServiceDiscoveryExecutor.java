@@ -1,19 +1,20 @@
 package org.irenical.fetchy.service.factory;
 
-
-import java.util.Optional;
-
-import org.irenical.fetchy.node.ServiceDiscoveryController;
 import org.irenical.fetchy.node.ServiceNode;
 import org.irenical.fetchy.node.balancer.ServiceNodeBalancer;
 import org.irenical.fetchy.node.discovery.ServiceNodeDiscovery;
 import org.irenical.fetchy.service.Stub;
 
+import java.util.List;
+import java.util.Optional;
+
 public abstract class ServiceDiscoveryExecutor<IFACE,CLIENT extends IFACE> implements Stub<IFACE> {
 
-    private final ServiceDiscoveryController serviceDiscoveryController = new ServiceDiscoveryController();
-
     private final String serviceId;
+
+    private ServiceNodeDiscovery nodeDiscovery;
+
+    private ServiceNodeBalancer nodeBalancer;
 
 
     public ServiceDiscoveryExecutor( String serviceId ) {
@@ -32,8 +33,33 @@ public abstract class ServiceDiscoveryExecutor<IFACE,CLIENT extends IFACE> imple
         }
     }
 
+    @Override
+    public void start() throws Exception {
+
+    }
+
+    @Override
+    public void stop() throws Exception {
+
+    }
+
+    @Override
+    public boolean isRunning() throws Exception {
+        return nodeDiscovery != null && nodeDiscovery.isRunning()
+                && nodeBalancer != null && nodeBalancer.isRunning();
+    }
+
+    public void setServiceNodeDiscovery(ServiceNodeDiscovery nodeDiscovery) {
+        this.nodeDiscovery = nodeDiscovery;
+    }
+
+    public void setServiceNodeBalancer(ServiceNodeBalancer nodeBalancer) {
+        this.nodeBalancer = nodeBalancer;
+    }
+
+
     private CLIENT create() {
-        Optional<ServiceNode> serviceNode = serviceDiscoveryController.get( serviceId );
+        Optional<ServiceNode> serviceNode = findServiceNode( serviceId );
         ServiceNode node = serviceNode.orElseThrow(() -> new RuntimeException( "Unable to find a service node" ));
 
         return newInstance( node );
@@ -46,28 +72,22 @@ public abstract class ServiceDiscoveryExecutor<IFACE,CLIENT extends IFACE> imple
 
     protected abstract void onAfterExecute( CLIENT client );
 
-    @Override
-    public void start() throws Exception {
-        serviceDiscoveryController.start();
+
+    private Optional<ServiceNode> findServiceNode( String serviceId ) {
+        List<ServiceNode> nodes = locate(serviceId);
+        return choose(nodes);
     }
 
-    @Override
-    public void stop() throws Exception {
-        serviceDiscoveryController.stop();
+    private List< ServiceNode > locate(String serviceId ) {
+        return nodeDiscovery == null ? null : nodeDiscovery.getServiceNodes( serviceId, true );
     }
 
-    @Override
-    public boolean isRunning() throws Exception {
-        return serviceDiscoveryController.isRunning();
+    private Optional<ServiceNode> choose( List< ServiceNode > nodes ) {
+        return nodeBalancer == null ? chooseDefault( nodes ) : nodeBalancer.getService( nodes );
     }
 
-
-    public void setServiceNodeDiscovery(ServiceNodeDiscovery serviceNodeLocator) {
-        serviceDiscoveryController.setServiceNodeDiscovery( serviceNodeLocator );
-    }
-
-    public void setServiceNodeBalancer(ServiceNodeBalancer serviceNodeBalancer) {
-        serviceDiscoveryController.setNodeBalancer( serviceNodeBalancer );
+    private Optional< ServiceNode > chooseDefault( List< ServiceNode > nodes ) {
+        return nodes == null || nodes.isEmpty() ? Optional.empty() : Optional.of( nodes.get( 0 ) );
     }
 
 }
