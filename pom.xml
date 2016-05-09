@@ -4,7 +4,7 @@
 
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy</artifactId>
-  <version>0.0.7</version>
+  <version>0.0.8-SNAPSHOT</version>
 
   <name>Fetchy</name>
 
