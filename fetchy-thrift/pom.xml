@@ -10,7 +10,7 @@
 
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-thrift</artifactId>
-  <version>0.0.8-SNAPSHOT</version>
+  <version>0.0.8</version>
   <packaging>jar</packaging>
 
   <name>Fetchy Thrift Service Factory</name>
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>org.irenical.fetchy</groupId>
       <artifactId>fetchy-api</artifactId>
-      <version>0.0.8-SNAPSHOT</version>
+      <version>0.0.8</version>
     </dependency>
 
     <dependency>
