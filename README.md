@@ -14,7 +14,7 @@ ThriftServiceDiscoveryFactory< < THRIFT_CONTRACT >.Iface, < THRIFT_CONTRACT >.Cl
 fetchy.register( factory );
 ```
 
-if ServiceNodeBalancer or ServiceNodeDiscovery is not registered with Java's ServiceLoader:
+Each factory should define its service node discovery and service node balancer:
 
 ```java
 factory.setServiceNodeDiscovery( serviceNodeDiscovery );
