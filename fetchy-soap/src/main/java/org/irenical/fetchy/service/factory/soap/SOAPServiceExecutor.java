@@ -12,6 +12,9 @@ public class SOAPServiceExecutor<PORT, ENDPOINT extends Service> extends Service
 
     private final Class< ENDPOINT > endpointClass;
 
+    private String address;
+
+    private PORT port;
 
     public SOAPServiceExecutor(Class< PORT > portClass, Class< ENDPOINT > endpointClass, String serviceId) {
         super( serviceId );
@@ -22,10 +25,14 @@ public class SOAPServiceExecutor<PORT, ENDPOINT extends Service> extends Service
 
     @Override
     protected PORT newInstance(ServiceNode serviceNode) throws Exception {
-//        TODO : can we cache the client?
-        ServiceClient<ENDPOINT, PORT> serviceClient = new ServiceClient<>( endpointClass, portClass,
-                URI.create( serviceNode.getAddress() ) );
-        return serviceClient.getPort();
+        if ( address == null || ! serviceNode.getAddress().equals( address ) ) {
+            address = serviceNode.getAddress();
+
+            ServiceClient<ENDPOINT, PORT> serviceClient = new ServiceClient<>( endpointClass, portClass,
+                    URI.create( serviceNode.getAddress() ) );
+            port = serviceClient.getPort();
+        }
+        return port;
     }
 
     @Override
