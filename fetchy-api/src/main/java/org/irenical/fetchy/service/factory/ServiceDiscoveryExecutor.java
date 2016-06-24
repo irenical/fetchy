@@ -26,6 +26,9 @@ public abstract class ServiceDiscoveryExecutor<IFACE,CLIENT extends IFACE> imple
         CLIENT clientInstance = null;
         try {
             clientInstance = create();
+            if ( clientInstance == null ) {
+                throw new RuntimeException( "Unable to instantiate a new client" );
+            }
             onBeforeExecute( clientInstance );
             return callable.call( (IFACE) clientInstance );
         } finally {
@@ -58,7 +61,7 @@ public abstract class ServiceDiscoveryExecutor<IFACE,CLIENT extends IFACE> imple
     }
 
 
-    private CLIENT create() {
+    private < ERROR extends Exception > CLIENT create() throws ERROR {
         Optional<ServiceNode> serviceNode = findServiceNode( serviceId );
         ServiceNode node = serviceNode.orElseThrow(() -> new RuntimeException( "Unable to find a service node" ));
 
