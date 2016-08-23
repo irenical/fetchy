@@ -37,6 +37,21 @@ public abstract class ServiceDiscoveryExecutor<IFACE,CLIENT extends IFACE> imple
     }
 
     @Override
+    public <ERROR extends Exception> void run(ServiceRun<IFACE, ERROR> callable) throws ERROR {
+        CLIENT clientInstance = null;
+        try {
+            clientInstance = create();
+            if ( clientInstance == null ) {
+                throw new RuntimeException( "Unable to instantiate a new client" );
+            }
+            onBeforeExecute( clientInstance );
+            callable.run( (IFACE) clientInstance );
+        } finally {
+            onAfterExecute( clientInstance );
+        }
+    }
+
+    @Override
     public void start() throws Exception {
 
     }
