@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.irenical.maven</groupId>
+        <artifactId>parent-root</artifactId>
+        <version>1.8.2</version>
+    </parent>
+
+    <groupId>org.irenical.fetchy</groupId>
+    <artifactId>fetchy-retrofit</artifactId>
+    <version>0.0.9-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>Fetchy REST Retrofit Service Executor</name>
+    <description>Fetchy REST - REST Service Retrofit Executor Implementation</description>
+
+    <scm>
+        <connection>scm:git:git@github.com:irenical/fetchy.git</connection>
+        <developerConnection>scm:git:git@github.com:irenical/fetchy.git</developerConnection>
+        <url>git@github.com:irenical/fetchy.git</url>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Diogo Neves</name>
+            <email>diogo.sousa.neves@gmail.com</email>
+        </developer>
+    </developers>
+
+    <properties>
+        <retrofit.version>2.1.0</retrofit.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.irenical.fetchy</groupId>
+            <artifactId>fetchy-rest</artifactId>
+            <version>0.0.9-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>retrofit</artifactId>
+            <version>${retrofit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>converter-moshi</artifactId>
+            <version>${retrofit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.retrofit2</groupId>
+            <artifactId>adapter-rxjava</artifactId>
+            <version>${retrofit.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>
+

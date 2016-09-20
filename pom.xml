@@ -31,6 +31,7 @@
     <module>fetchy-api</module>
     <module>fetchy-consul</module>
     <module>fetchy-rest</module>
+    <module>fetchy-retrofit</module>
     <module>fetchy-soap</module>
     <module>fetchy-thrift</module>
   </modules>

@@ -1,25 +1,29 @@
 package org.irenical.fetchy.service.factory.rest;
 
 import org.irenical.fetchy.service.Stub;
+import org.irenical.fetchy.service.factory.ServiceDiscoveryExecutor;
 import org.irenical.fetchy.service.factory.ServiceDiscoveryFactory;
 
-public class RESTServiceDiscoveryFactory<IFACE> extends ServiceDiscoveryFactory<IFACE> {
+public abstract class RESTServiceDiscoveryFactory<IFACE> extends ServiceDiscoveryFactory<IFACE> {
 
-    private final String serviceId;
-
-    public RESTServiceDiscoveryFactory(Class<IFACE> ifaceClass, String serviceId) {
+    public RESTServiceDiscoveryFactory(Class<IFACE> ifaceClass) {
         super( ifaceClass );
-        this.serviceId = serviceId;
     }
 
     @Override
     public Stub<IFACE> createService() {
-        RESTServiceExecutor<IFACE> serviceExecutor = new RESTServiceExecutor<>(getServiceInterface(), serviceId);
+        ServiceDiscoveryExecutor<IFACE, IFACE> serviceExecutor = createServiceExecutor();
 
-        serviceExecutor.setServiceNodeDiscovery( getServiceNodeDiscovery() );
-        serviceExecutor.setServiceNodeBalancer( getServiceNodeBalancer() );
+        setupServiceExecutor( serviceExecutor );
 
         return serviceExecutor;
     }
+
+    private void setupServiceExecutor( ServiceDiscoveryExecutor< IFACE, IFACE > serviceExecutor ) {
+        serviceExecutor.setServiceNodeDiscovery( getServiceNodeDiscovery() );
+        serviceExecutor.setServiceNodeBalancer( getServiceNodeBalancer() );
+    }
+
+    protected abstract ServiceDiscoveryExecutor< IFACE, IFACE > createServiceExecutor();
 
 }
