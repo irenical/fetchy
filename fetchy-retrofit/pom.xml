@@ -10,7 +10,7 @@
 
     <groupId>org.irenical.fetchy</groupId>
     <artifactId>fetchy-retrofit</artifactId>
-    <version>0.1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>jar</packaging>
 
     <name>Fetchy REST Retrofit Service Executor</name>
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>org.irenical.fetchy</groupId>
             <artifactId>fetchy-rest</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1.0</version>
         </dependency>
 
         <dependency>
