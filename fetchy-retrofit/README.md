@@ -21,7 +21,7 @@ public interface MyApi {
 You can then call your api method:
 
 ```java
-Fetchy.find( MyApi.class )
+Fetchy.find( "myServiceId" )
     .ifPresent( stub -> {
         stub.call( client -> {
             client.getObject( "some-path-value" )
