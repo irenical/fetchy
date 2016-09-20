@@ -10,7 +10,7 @@
 
     <groupId>org.irenical.fetchy</groupId>
     <artifactId>fetchy-jersey2</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.1.1</version>
     <packaging>jar</packaging>
 
     <name>Fetchy REST Jersey2 Service Executor</name>
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>org.irenical.fetchy</groupId>
             <artifactId>fetchy-rest</artifactId>
-            <version>0.1.1-SNAPSHOT</version>
+            <version>0.1.1</version>
         </dependency>
 
         <dependency>

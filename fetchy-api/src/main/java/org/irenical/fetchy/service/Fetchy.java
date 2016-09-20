@@ -42,6 +42,10 @@ public class Fetchy implements LifeCycle {
     }
   }
 
+  public < SERVICE > Optional< Stub< SERVICE > > find( String serviceId, Class< SERVICE > serviceClass ) {
+    return find( serviceId );
+  }
+
   @SuppressWarnings("unchecked")
   public < SERVICE > Optional< Stub< SERVICE > > find( String serviceId ) {
     Stub< SERVICE > serviceExecutor = (Stub<SERVICE>) services.get( serviceId );
