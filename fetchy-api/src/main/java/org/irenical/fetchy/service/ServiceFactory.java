@@ -7,7 +7,7 @@ package org.irenical.fetchy.service;
  */
 public interface ServiceFactory< SERVICE > {
 
-  Class< SERVICE > getServiceInterface();
+  String getId();
 
   Stub< SERVICE > createService();
 

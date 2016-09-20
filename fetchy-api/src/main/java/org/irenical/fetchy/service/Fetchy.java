@@ -13,9 +13,9 @@ public class Fetchy implements LifeCycle {
 
   private static final Logger LOG = LoggerFactory.getLogger(Fetchy.class);
 
-  private Map<Class<?>, ServiceFactory<?>> factories;
+  private Map<String, ServiceFactory<?>> factories;
 
-  private Map<Class<?>, Stub< ? > > services;
+  private Map<String, Stub< ? > > services;
 
   private void loadFactories() {
     for (ServiceFactory< ? > factory : ServiceLoader.load(ServiceFactory.class)) {
@@ -32,28 +32,28 @@ public class Fetchy implements LifeCycle {
       LOG.error("Trying to register null service factory, ignoring", new Exception());
       return;
     }
-    if(factory.getServiceInterface()==null){
-      LOG.error("Service factory <" + factory + "> must declare implementing service interface, ignoring", new Exception());
+    if(factory.getId()==null){
+      LOG.error("Service factory <" + factory + "> must declare service id, ignoring", new Exception());
       return;
     }
-    ServiceFactory<?> was = factories.putIfAbsent(factory.getServiceInterface(), factory);
+    ServiceFactory<?> was = factories.putIfAbsent(factory.getId(), factory);
     if (was != null) {
-      throw new ServiceAlreadyExistsException("Error loading service factory " + factory + ". A factory for service class " + factory.getServiceInterface() + " is already registered (" + was + ")");
+      throw new ServiceAlreadyExistsException("Error loading service factory " + factory + ". A factory for service " + factory.getId() + " is already registered (" + was + ")");
     }
   }
 
   @SuppressWarnings("unchecked")
-  public < SERVICE > Optional< Stub< SERVICE > > find( Class< SERVICE > serviceClass ) {
-    Stub< SERVICE > serviceExecutor = (Stub<SERVICE>) services.get(serviceClass);
+  public < SERVICE > Optional< Stub< SERVICE > > find( String serviceId ) {
+    Stub< SERVICE > serviceExecutor = (Stub<SERVICE>) services.get( serviceId );
     if ( serviceExecutor == null ) {
-      ServiceFactory<SERVICE> factory = (ServiceFactory<SERVICE>) factories.get(serviceClass);
+      ServiceFactory<SERVICE> factory = (ServiceFactory<SERVICE>) factories.get( serviceId );
       if (factory != null) {
         synchronized (factory) { // ensure only one service gets instantiated
-          serviceExecutor = (Stub<SERVICE>) services.get(serviceClass);
+          serviceExecutor = (Stub<SERVICE>) services.get( serviceId );
           if (serviceExecutor == null) {
             serviceExecutor = factory.createService();
             serviceExecutor.start();
-            services.put(serviceClass, serviceExecutor);
+            services.put(serviceId, serviceExecutor);
           }
         }
       }
@@ -70,7 +70,7 @@ public class Fetchy implements LifeCycle {
 
   @Override
   public synchronized void stop() {
-    services.values().stream().forEach(LifeCycle::stop);
+    services.values().forEach(LifeCycle::stop);
     services = null;
   }
 

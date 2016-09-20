@@ -5,15 +5,15 @@ import org.irenical.fetchy.service.ServiceFactory;
 
 public abstract class BaseServiceFactory< IFACE > implements ServiceFactory< IFACE > {
 
-    private final Class< IFACE > serviceInterface;
+    private final String id;
 
-    public BaseServiceFactory(Class<IFACE> serviceInterface) {
-        this.serviceInterface = serviceInterface;
+    public BaseServiceFactory( String id ) {
+        this.id = id;
     }
 
     @Override
-    public Class<IFACE> getServiceInterface() {
-        return serviceInterface;
+    public String getId() {
+        return id;
     }
 
 }

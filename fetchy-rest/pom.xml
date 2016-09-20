@@ -29,10 +29,6 @@
     </developer>
   </developers>
 
-  <properties>
-    <retrofit.version>2.1.0</retrofit.version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.irenical.fetchy</groupId>

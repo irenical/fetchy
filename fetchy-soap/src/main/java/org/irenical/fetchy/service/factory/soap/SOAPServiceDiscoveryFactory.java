@@ -7,19 +7,22 @@ import javax.xml.ws.Service;
 
 public class SOAPServiceDiscoveryFactory< PORT, ENDPOINT extends Service > extends ServiceDiscoveryFactory< PORT > {
 
+    private final Class< PORT > portClass;
+
     private final Class< ENDPOINT > endpointClass;
 
     private final String serviceId;
 
-    public SOAPServiceDiscoveryFactory(Class< PORT > portClass, Class< ENDPOINT > endpointClass, String serviceId) {
-        super( portClass );
+    public SOAPServiceDiscoveryFactory( String id, Class< PORT > portClass, Class< ENDPOINT > endpointClass, String serviceId ) {
+        super( id );
+        this.portClass = portClass;
         this.endpointClass = endpointClass;
         this.serviceId = serviceId;
     }
 
     @Override
     public Stub<PORT> createService() {
-        SOAPServiceExecutor<PORT, ENDPOINT> serviceExecutor = new SOAPServiceExecutor<>(getServiceInterface(), endpointClass, serviceId);
+        SOAPServiceExecutor<PORT, ENDPOINT> serviceExecutor = new SOAPServiceExecutor<>(portClass, endpointClass, serviceId);
 
         serviceExecutor.setServiceNodeDiscovery( getServiceNodeDiscovery() );
         serviceExecutor.setServiceNodeBalancer( getServiceNodeBalancer() );

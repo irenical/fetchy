@@ -10,8 +10,8 @@ public abstract class ServiceDiscoveryFactory< IFACE > extends BaseServiceFactor
     private ServiceNodeBalancer serviceNodeBalancer = null;
 
 
-    public ServiceDiscoveryFactory(Class<IFACE> serviceInterface) {
-        super(serviceInterface);
+    public ServiceDiscoveryFactory( String id ) {
+        super( id );
     }
 
     public ServiceNodeDiscovery getServiceNodeDiscovery() {

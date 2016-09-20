@@ -6,8 +6,8 @@ import org.irenical.fetchy.service.factory.ServiceDiscoveryFactory;
 
 public abstract class RESTServiceDiscoveryFactory<IFACE> extends ServiceDiscoveryFactory<IFACE> {
 
-    public RESTServiceDiscoveryFactory(Class<IFACE> ifaceClass) {
-        super( ifaceClass );
+    public RESTServiceDiscoveryFactory( String id ) {
+        super( id );
     }
 
     @Override

@@ -32,6 +32,7 @@
     <module>fetchy-consul</module>
     <module>fetchy-rest</module>
     <module>fetchy-retrofit</module>
+    <module>fetchy-jersey2</module>
     <module>fetchy-soap</module>
     <module>fetchy-thrift</module>
   </modules>

@@ -9,8 +9,8 @@ public class ThriftServiceDiscoveryFactory<IFACE, CLIENT extends IFACE> extends 
 
     private final String serviceId;
 
-    public ThriftServiceDiscoveryFactory(Class<IFACE> serviceInterface, Class<CLIENT> clientClass, String serviceId) {
-        super(serviceInterface);
+    public ThriftServiceDiscoveryFactory( String id, Class<CLIENT> clientClass, String serviceId ) {
+        super( id );
 
         this.clientClass = clientClass;
         this.serviceId = serviceId;
