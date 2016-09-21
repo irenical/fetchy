@@ -16,7 +16,12 @@ public class Jersey2ServiceDiscoveryFactory extends ServiceDiscoveryFactory<WebT
 
     @Override
     public Stub<WebTarget> createService() {
-        return new Jersey2ServiceExecutor( serviceId );
+        Jersey2ServiceExecutor executor = new Jersey2ServiceExecutor(serviceId);
+
+        executor.setServiceNodeBalancer( getServiceNodeBalancer() );
+        executor.setServiceNodeDiscovery( getServiceNodeDiscovery() );
+
+        return executor;
     }
 
 }
