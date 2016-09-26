@@ -23,18 +23,17 @@ public class RetrofitServiceExecutor<IFACE> extends ServiceDiscoveryExecutor<IFA
     @Override
     protected IFACE newInstance(ServiceNode serviceNode) throws Exception {
 
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl( serviceNode.getAddress() );
-
-        if ( httpClient != null ) {
-            builder.client( httpClient );
+        if ( httpClient == null ) {
+            httpClient = new OkHttpClient();
         }
 
-        builder.addCallAdapterFactory( RxJavaCallAdapterFactory.create() );
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl( serviceNode.getAddress() )
+                .client( httpClient )
+                .addCallAdapterFactory( RxJavaCallAdapterFactory.create() )
+                .addConverterFactory( MoshiConverterFactory.create() )
+                .build();
 
-        builder.addConverterFactory( MoshiConverterFactory.create() );
-
-        Retrofit retrofit = builder.build();
         return retrofit.create( ifaceClass );
     }
 
