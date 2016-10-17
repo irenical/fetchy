@@ -30,6 +30,7 @@
   <modules>
     <module>fetchy-api</module>
     <module>fetchy-consul</module>
+    <module>fetchy-random</module>
     <module>fetchy-rest</module>
     <module>fetchy-retrofit</module>
     <module>fetchy-jersey2</module>
