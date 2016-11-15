@@ -10,7 +10,7 @@
 
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-api</artifactId>
-  <version>0.1.5-SNAPSHOT</version>
+  <version>0.1.5</version>
   <packaging>jar</packaging>
 
   <name>Fetchy API</name>

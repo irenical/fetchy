@@ -1,18 +1,19 @@
 package org.irenical.fetchy.node.discovery.consul;
 
+import com.ecwid.consul.ConsulException;
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.Self;
 import com.ecwid.consul.v1.health.model.Check;
 import com.ecwid.consul.v1.health.model.HealthService;
 import org.irenical.fetchy.node.ServiceNode;
+import org.irenical.fetchy.node.discovery.ServiceDiscoveryException;
 import org.irenical.fetchy.node.discovery.ServiceNodeDiscovery;
 import org.irenical.jindy.Config;
 import org.irenical.jindy.ConfigFactory;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ConsulNodeDiscovery implements ServiceNodeDiscovery {
@@ -71,20 +72,24 @@ public class ConsulNodeDiscovery implements ServiceNodeDiscovery {
     }
 
     @Override
-    public List<ServiceNode> getServiceNodes(String serviceId, boolean onlyHealthy ) {
-        Response<List<HealthService>> serviceResponse = consulClient.getHealthServices( serviceId, onlyHealthy, null );
-        if ( serviceResponse == null ) {
-            return Collections.emptyList();
-        }
+    public List<ServiceNode> getServiceNodes(String serviceId, boolean onlyHealthy ) throws ServiceDiscoveryException {
+        try {
+            Response<List<HealthService>> serviceResponse = consulClient.getHealthServices(serviceId, onlyHealthy, null);
+            if (serviceResponse == null) {
+                return Collections.emptyList();
+            }
 
-        List<HealthService> responseValue = serviceResponse.getValue();
-        if ( responseValue == null ) {
-            return Collections.emptyList();
-        }
+            List<HealthService> responseValue = serviceResponse.getValue();
+            if (responseValue == null) {
+                return Collections.emptyList();
+            }
 
-        return responseValue.stream()
-                .map(this::fromHealthService)
-                .collect(Collectors.toList());
+            return responseValue.stream()
+                    .map(this::fromHealthService)
+                    .collect(Collectors.toList());
+        } catch ( ConsulException e ) {
+            throw new ServiceDiscoveryException( e.getLocalizedMessage(), e );
+        }
     }
 
     private ServiceNode fromHealthService( HealthService healthService ) {
@@ -120,14 +125,11 @@ public class ConsulNodeDiscovery implements ServiceNodeDiscovery {
                 })
                 .collect( Collectors.collectingAndThen(
                         Collectors.toList(),
-                        new Function<List<ServiceNode.ServiceStatus>, ServiceNode.ServiceStatus>() {
-                            @Override
-                            public ServiceNode.ServiceStatus apply(List<ServiceNode.ServiceStatus> list) {
-                                if ( list == null || list.isEmpty() ) {
-                                    return ServiceNode.ServiceStatus.UNKNOWN;
-                                }
-                                return list.get( 0 );
+                        list -> {
+                            if ( list == null || list.isEmpty() ) {
+                                return ServiceNode.ServiceStatus.UNKNOWN;
                             }
+                            return list.get( 0 );
                         })
                 );
     }
