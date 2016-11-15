@@ -1,5 +1,6 @@
 package org.irenical.fetchy.service;
 
+import org.irenical.fetchy.node.discovery.ServiceDiscoveryException;
 import org.irenical.lifecycle.LifeCycle;
 
 /**
@@ -24,8 +25,8 @@ public interface Stub<IFACE> extends LifeCycle {
         void run(IFACE client) throws ERROR;
     }
 
-    <OUTPUT,ERROR extends Exception> OUTPUT call(ServiceCall<IFACE,OUTPUT,ERROR> callable) throws ERROR;
+    <OUTPUT,ERROR extends Exception> OUTPUT call(ServiceCall<IFACE,OUTPUT,ERROR> callable) throws ServiceDiscoveryException, ERROR;
 
-    <ERROR extends Exception> void run(ServiceRun<IFACE, ERROR> callable) throws ERROR;
+    <ERROR extends Exception> void run(ServiceRun<IFACE, ERROR> callable) throws ServiceDiscoveryException, ERROR;
     
 }

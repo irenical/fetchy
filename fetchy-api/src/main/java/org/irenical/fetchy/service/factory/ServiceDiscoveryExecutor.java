@@ -2,6 +2,7 @@ package org.irenical.fetchy.service.factory;
 
 import org.irenical.fetchy.node.ServiceNode;
 import org.irenical.fetchy.node.balancer.ServiceNodeBalancer;
+import org.irenical.fetchy.node.discovery.ServiceDiscoveryException;
 import org.irenical.fetchy.node.discovery.ServiceNodeDiscovery;
 import org.irenical.fetchy.service.Stub;
 
@@ -22,7 +23,7 @@ public abstract class ServiceDiscoveryExecutor<IFACE,CLIENT extends IFACE> imple
     }
 
     @Override
-    public <OUTPUT, ERROR extends Exception> OUTPUT call(ServiceCall<IFACE,OUTPUT,ERROR> callable) throws ERROR {
+    public <OUTPUT, ERROR extends Exception> OUTPUT call(ServiceCall<IFACE,OUTPUT,ERROR> callable) throws ServiceDiscoveryException, ERROR {
         CLIENT clientInstance = null;
         try {
             clientInstance = create();
@@ -37,7 +38,7 @@ public abstract class ServiceDiscoveryExecutor<IFACE,CLIENT extends IFACE> imple
     }
 
     @Override
-    public <ERROR extends Exception> void run(ServiceRun<IFACE, ERROR> callable) throws ERROR {
+    public <ERROR extends Exception> void run(ServiceRun<IFACE, ERROR> callable) throws ServiceDiscoveryException, ERROR {
         CLIENT clientInstance = null;
         try {
             clientInstance = create();
@@ -76,9 +77,9 @@ public abstract class ServiceDiscoveryExecutor<IFACE,CLIENT extends IFACE> imple
     }
 
 
-    private < ERROR extends Exception > CLIENT create() throws ERROR {
+    private < ERROR extends Exception > CLIENT create() throws ServiceDiscoveryException, ERROR {
         Optional<ServiceNode> serviceNode = findServiceNode( serviceId );
-        ServiceNode node = serviceNode.orElseThrow(() -> new RuntimeException( "Unable to find a service node" ));
+        ServiceNode node = serviceNode.orElseThrow(() -> new ServiceDiscoveryException( "Unable to find a service node" ));
 
         return newInstance( node );
     }
@@ -91,12 +92,12 @@ public abstract class ServiceDiscoveryExecutor<IFACE,CLIENT extends IFACE> imple
     protected abstract void onAfterExecute( CLIENT client );
 
 
-    private Optional<ServiceNode> findServiceNode( String serviceId ) {
+    private Optional<ServiceNode> findServiceNode( String serviceId ) throws ServiceDiscoveryException {
         List<ServiceNode> nodes = locate(serviceId);
         return choose(nodes);
     }
 
-    private List< ServiceNode > locate(String serviceId ) {
+    private List< ServiceNode > locate(String serviceId ) throws ServiceDiscoveryException {
         return nodeDiscovery == null ? null : nodeDiscovery.getServiceNodes( serviceId, true );
     }
 

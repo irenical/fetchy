@@ -1,20 +1,19 @@
 package org.irenical.fetchy.node.discovery.consul;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import org.irenical.fetchy.node.ServiceNode;
-import org.irenical.fetchy.node.discovery.ServiceNodeDiscovery;
-import org.irenical.jindy.Config;
-import org.irenical.jindy.ConfigFactory;
-
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.Self;
 import com.ecwid.consul.v1.health.model.Check;
 import com.ecwid.consul.v1.health.model.HealthService;
+import org.irenical.fetchy.node.ServiceNode;
+import org.irenical.fetchy.node.discovery.ServiceNodeDiscovery;
+import org.irenical.jindy.Config;
+import org.irenical.jindy.ConfigFactory;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ConsulNodeDiscovery implements ServiceNodeDiscovery {
 
@@ -75,12 +74,12 @@ public class ConsulNodeDiscovery implements ServiceNodeDiscovery {
     public List<ServiceNode> getServiceNodes(String serviceId, boolean onlyHealthy ) {
         Response<List<HealthService>> serviceResponse = consulClient.getHealthServices( serviceId, onlyHealthy, null );
         if ( serviceResponse == null ) {
-            return new ArrayList<>( 0 );
+            return Collections.emptyList();
         }
 
         List<HealthService> responseValue = serviceResponse.getValue();
         if ( responseValue == null ) {
-            return new ArrayList<>( 0 );
+            return Collections.emptyList();
         }
 
         return responseValue.stream()

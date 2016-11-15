@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ServiceNodeDiscovery extends LifeCycle {
 
-    List<ServiceNode> getServiceNodes(String serviceId, boolean onlyHealthy);
+    List<ServiceNode> getServiceNodes(String serviceId, boolean onlyHealthy) throws ServiceDiscoveryException;
 
 }
