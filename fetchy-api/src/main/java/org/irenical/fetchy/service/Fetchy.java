@@ -76,6 +76,7 @@ public class Fetchy implements LifeCycle {
   public synchronized void stop() {
     services.values().forEach(LifeCycle::stop);
     services = null;
+    factories = null;
   }
 
   @Override
