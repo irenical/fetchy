@@ -36,6 +36,7 @@
     <module>fetchy-jersey2</module>
     <module>fetchy-soap</module>
     <module>fetchy-thrift</module>
+    <module>fetchy-grpc</module>
   </modules>
 
 </project>
