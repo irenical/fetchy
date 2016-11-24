@@ -1,5 +1,6 @@
 [![][maven img]][maven]
 [![][travis img]][travis]
+[![][codecov img]][codecov]
 
 Fetchy is a service discovery API and libraries for Java
 
@@ -64,3 +65,6 @@ To use Fetchy you need both the API and factories. ServiceNodeBalancer and Servi
 
 [travis]:https://travis-ci.org/irenical/fetchy
 [travis img]:https://travis-ci.org/irenical/fetchy.svg?branch=master
+
+[codecov]:https://codecov.io/gh/irenical/fetcht
+[codecov img]:https://codecov.io/gh/irenical/fetchy/branch/master/graph/badge.svg
