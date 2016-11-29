@@ -45,18 +45,26 @@ To use Fetchy you need both the API and factories. ServiceNodeBalancer and Servi
 <dependency>
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-api</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.5</version>
 </dependency>
 
+<!-- thrift client implementation -->
 <dependency>
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-thrift</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.5</version>
 </dependency>
+<!-- for a consul service discovery implementation -->
 <dependency>
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-consul</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.5</version>
+</dependency>
+<!-- for a random service balancer implementation -->
+<dependency>
+  <groupId>org.irenical.fetchy</groupId>
+  <artifactId>fetchy-random</artifactId>
+  <version>0.1.5</version>
 </dependency>
 ```
 
