@@ -9,7 +9,7 @@
 
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-grpc</artifactId>
-  <version>0.1.5</version>
+  <version>0.1.6-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Fetchy gRPC Service Factory</name>
@@ -19,7 +19,6 @@
     <connection>scm:git:git@github.com:irenical/fetchy.git</connection>
     <developerConnection>scm:git:git@github.com:irenical/fetchy.git</developerConnection>
     <url>git@github.com:irenical/fetchy.git</url>
-    <tag>fetchy-grpc-0.1.5</tag>
   </scm>
 
   <developers>
@@ -33,7 +32,7 @@
     <dependency>
       <groupId>org.irenical.fetchy</groupId>
       <artifactId>fetchy-api</artifactId>
-      <version>0.1.5</version>
+      <version>0.1.6-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>io.grpc</groupId>
