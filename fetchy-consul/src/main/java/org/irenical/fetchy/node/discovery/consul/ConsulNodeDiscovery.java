@@ -86,6 +86,12 @@ public class ConsulNodeDiscovery implements ServiceNodeDiscovery {
 
             return responseValue.stream()
                     .map(this::fromHealthService)
+                    .filter( serviceNode -> {
+                        if ( onlyHealthy ) {
+                            return ServiceNode.ServiceStatus.HEALTHY.equals( serviceNode.getStatus() );
+                        }
+                        return true;
+                    } )
                     .collect(Collectors.toList());
         } catch ( ConsulException e ) {
             throw new ServiceDiscoveryException( e.getLocalizedMessage(), e );
