@@ -79,7 +79,7 @@ public abstract class ServiceDiscoveryExecutor<IFACE,CLIENT extends IFACE> imple
 
     private < ERROR extends Exception > CLIENT create() throws ServiceDiscoveryException, ERROR {
         Optional<ServiceNode> serviceNode = findServiceNode( serviceId );
-        ServiceNode node = serviceNode.orElseThrow(() -> new ServiceDiscoveryException( "Unable to find a service node" ));
+        ServiceNode node = serviceNode.orElseThrow(() -> new ServiceDiscoveryException( "Unable to find a service node for service <" + serviceId + ">" ));
 
         return newInstance( node );
     }
