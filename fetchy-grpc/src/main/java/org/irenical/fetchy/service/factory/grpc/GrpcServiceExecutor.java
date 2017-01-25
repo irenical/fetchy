@@ -14,14 +14,23 @@ public class GrpcServiceExecutor<IFACE extends AbstractStub<?>> extends ServiceD
 
   private Function<Channel, IFACE> stubGenerator;
 
+  private boolean usePlaintext = false;
+
   public GrpcServiceExecutor(String serviceId, Function<Channel, IFACE> stubGenerator) {
+    this( serviceId, stubGenerator, false );
+  }
+
+  public GrpcServiceExecutor(String serviceId, Function<Channel, IFACE> stubGenerator, boolean usePlaintext ) {
     super(serviceId);
     this.stubGenerator = stubGenerator;
+    this.usePlaintext = usePlaintext;
   }
 
   @Override
   protected IFACE newInstance(ServiceNode serviceNode) throws Exception {
-    ManagedChannel channel = ManagedChannelBuilder.forAddress(serviceNode.getAddress(), serviceNode.getPort()).build();
+    ManagedChannel channel = ManagedChannelBuilder.forAddress(serviceNode.getAddress(), serviceNode.getPort())
+            .usePlaintext( usePlaintext )
+            .build();
     return stubGenerator.apply(channel);
   }
 
