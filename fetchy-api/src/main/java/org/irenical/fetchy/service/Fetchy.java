@@ -28,6 +28,9 @@ public class Fetchy implements LifeCycle {
   }
 
   public synchronized < SERVICE > void register(ServiceFactory< SERVICE > factory) throws ServiceAlreadyExistsException {
+    if ( ! isRunning() ) {
+      throw new IllegalStateException( "fetchy is not running. forgot to call start()?" );
+    }
     if(factory==null){
       LOG.error("Trying to register null service factory, ignoring", new Exception());
       return;
@@ -48,6 +51,10 @@ public class Fetchy implements LifeCycle {
 
   @SuppressWarnings("unchecked")
   public < SERVICE > Optional< Stub< SERVICE > > find( String serviceId ) {
+    if ( ! isRunning() ) {
+      throw new IllegalStateException( "fetchy is not running. forgot to call start()?" );
+    }
+
     Stub< SERVICE > serviceExecutor = (Stub<SERVICE>) services.get( serviceId );
     if ( serviceExecutor == null ) {
       ServiceFactory<SERVICE> factory = (ServiceFactory<SERVICE>) factories.get( serviceId );
