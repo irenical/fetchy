@@ -2,14 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.irenical.maven</groupId>
-    <artifactId>parent-root</artifactId>
-    <version>1.8.3</version>
+    <groupId>org.irenical.fetchy</groupId>
+    <artifactId>fetchy</artifactId>
+    <version>0.0.0</version>
   </parent>
 
-  <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-consul</artifactId>
-  <version>0.1.7-SNAPSHOT</version>
+  <version>${fetchy.api.version}</version>
   <packaging>jar</packaging>
 
   <name>Fetchy Consul Service Discovery</name>
@@ -29,12 +28,11 @@
     </developer>
   </developers>
 
-
   <dependencies>
     <dependency>
       <groupId>org.irenical.fetchy</groupId>
       <artifactId>fetchy-api</artifactId>
-      <version>0.1.7-SNAPSHOT</version>
+      <version>${fetchy.api.version}</version>
     </dependency>
 
     <dependency>

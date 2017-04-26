@@ -1,71 +1,77 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>org.irenical.maven</groupId>
+		<artifactId>parent-root</artifactId>
+		<version>1.8.2</version>
+	</parent>
 
-  <groupId>org.irenical.fetchy</groupId>
-  <artifactId>fetchy</artifactId>
-  <version>0.1.7-SNAPSHOT</version>
+	<groupId>org.irenical.fetchy</groupId>
+	<artifactId>fetchy</artifactId>
+	<version>0.0.0</version>
 
-  <name>Fetchy</name>
+	<properties>
+		<fetchy.api.version>2.0.0-SNAPSHOT</fetchy.api.version>
+	</properties>
 
-  <packaging>pom</packaging>
+	<name>Fetchy</name>
 
-  <scm>
-    <connection>scm:git:git@github.com:irenical/fetchy.git</connection>
-    <developerConnection>scm:git:git@github.com:irenical/fetchy.git</developerConnection>
-    <url>git@github.com:irenical/fetchy.git</url>
-    <tag>HEAD</tag>
-  </scm>
+	<packaging>pom</packaging>
 
-  <developers>
-    <developer>
-      <name>Tiago Simão</name>
-      <email>tiagosimao@gmail.com</email>
-    </developer>
-    <developer>
-      <name>Diogo Neves</name>
-      <email>diogo.sousa.neves@gmail.com</email>
-    </developer>
-  </developers>
+	<scm>
+		<connection>scm:git:git@github.com:irenical/fetchy.git</connection>
+		<developerConnection>scm:git:git@github.com:irenical/fetchy.git</developerConnection>
+		<url>git@github.com:irenical/fetchy.git</url>
+		<tag>HEAD</tag>
+	</scm>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.7.6.201602180812</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>prepare-agent</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>report</id>
-            <phase>test</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin> 
-        <artifactId>maven-release-plugin</artifactId> 
-        <version>2.5.3</version> 
-      </plugin>  
-    </plugins>
-  </build>
+	<developers>
+		<developer>
+			<name>Tiago Simão</name>
+			<email>tiagosimao@gmail.com</email>
+		</developer>
+		<developer>
+			<name>Diogo Neves</name>
+			<email>diogo.sousa.neves@gmail.com</email>
+		</developer>
+	</developers>
 
-  <modules>
-    <module>fetchy-api</module>
-    <module>fetchy-consul</module>
-    <module>fetchy-random</module>
-    <module>fetchy-rest</module>
-    <module>fetchy-retrofit</module>
-    <module>fetchy-jersey2</module>
-    <module>fetchy-soap</module>
-    <module>fetchy-thrift</module>
-    <module>fetchy-grpc</module>
-  </modules>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.7.6.201602180812</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<modules>
+		<module>fetchy-api</module>
+		<module>fetchy-consul</module>
+		<module>fetchy-random</module>
+		<module>fetchy-rest</module>
+		<module>fetchy-retrofit</module>
+		<module>fetchy-jersey2</module>
+		<module>fetchy-soap</module>
+		<module>fetchy-thrift</module>
+		<module>fetchy-grpc</module>
+	</modules>
 
 </project>

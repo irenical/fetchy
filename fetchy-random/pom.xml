@@ -2,14 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.irenical.maven</groupId>
-    <artifactId>parent-root</artifactId>
-    <version>1.8.3</version>
+    <groupId>org.irenical.fetchy</groupId>
+    <artifactId>fetchy</artifactId>
+    <version>0.0.0</version>
   </parent>
 
-  <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-random</artifactId>
-  <version>0.1.7-SNAPSHOT</version>
+  <version>${fetchy.api.version}</version>
   <packaging>jar</packaging>
 
   <name>Fetchy Random Node Balancer</name>
@@ -34,7 +33,7 @@
     <dependency>
       <groupId>org.irenical.fetchy</groupId>
       <artifactId>fetchy-api</artifactId>
-      <version>0.1.7-SNAPSHOT</version>
+      <version>${fetchy.api.version}</version>
     </dependency>
 
     <dependency>
