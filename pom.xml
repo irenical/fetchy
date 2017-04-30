@@ -10,11 +10,7 @@
 
 	<groupId>org.irenical.fetchy</groupId>
 	<artifactId>fetchy</artifactId>
-	<version>0.0.0</version>
-
-	<properties>
-		<fetchy.api.version>2.0.0-SNAPSHOT</fetchy.api.version>
-	</properties>
+	<version>2.0.0-SNAPSHOT</version>
 
 	<name>Fetchy</name>
 
