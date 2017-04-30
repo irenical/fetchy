@@ -11,13 +11,6 @@
 	<artifactId>fetchy-soap</artifactId>
 	<packaging>jar</packaging>
 
-	<scm>
-		<connection>scm:git:git@github.com:irenical/fetchy.git</connection>
-		<developerConnection>scm:git:git@github.com:irenical/fetchy.git</developerConnection>
-		<url>git@github.com:irenical/fetchy.git</url>
-		<tag>HEAD</tag>
-	</scm>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.irenical.fetchy</groupId>

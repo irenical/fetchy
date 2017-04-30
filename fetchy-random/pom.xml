@@ -13,13 +13,6 @@
   <name>Fetchy Random Node Balancer</name>
   <description>Fetchy Random - Random Node Balancer Implementation</description>
 
-  <scm>
-    <connection>scm:git:git@github.com:irenical/fetchy.git</connection>
-    <developerConnection>scm:git:git@github.com:irenical/fetchy.git</developerConnection>
-    <url>git@github.com:irenical/fetchy.git</url>
-    <tag>HEAD</tag>
-  </scm>
-
   <developers>
     <developer>
       <name>Diogo Neves</name>

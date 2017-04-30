@@ -14,13 +14,6 @@
   <name>Fetchy API</name>
   <description>Fetchy - Service Discovery API</description>
 
-  <scm>
-    <connection>scm:git:git@github.com:irenical/fetchy.git</connection>
-    <developerConnection>scm:git:git@github.com:irenical/fetchy.git</developerConnection>
-    <url>git@github.com:irenical/fetchy.git</url>
-    <tag>HEAD</tag>
-  </scm>
-
   <developers>
     <developer>
       <name>Diogo Neves</name>

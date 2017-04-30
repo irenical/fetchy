@@ -1,51 +1,45 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.irenical.fetchy</groupId>
-    <artifactId>fetchy</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
-  </parent>
+	<parent>
+		<groupId>org.irenical.fetchy</groupId>
+		<artifactId>fetchy</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
 
-  <artifactId>fetchy-consul</artifactId>
-  <packaging>jar</packaging>
+	<artifactId>fetchy-consul</artifactId>
+	<packaging>jar</packaging>
 
-  <name>Fetchy Consul Service Discovery</name>
-  <description>Fetchy Consul - Consul Service Discovery Implementation</description>
+	<name>Fetchy Consul Service Discovery</name>
+	<description>Fetchy Consul - Consul Service Discovery Implementation</description>
 
-  <scm>
-    <connection>scm:git:git@github.com:irenical/fetchy.git</connection>
-    <developerConnection>scm:git:git@github.com:irenical/fetchy.git</developerConnection>
-    <url>git@github.com:irenical/fetchy.git</url>
-    <tag>HEAD</tag>
-  </scm>
+	<developers>
+		<developer>
+			<name>Diogo Neves</name>
+			<email>diogo.sousa.neves@gmail.com</email>
+		</developer>
+	</developers>
 
-  <developers>
-    <developer>
-      <name>Diogo Neves</name>
-      <email>diogo.sousa.neves@gmail.com</email>
-    </developer>
-  </developers>
+	<dependencies>
+		<dependency>
+			<groupId>org.irenical.fetchy</groupId>
+			<artifactId>fetchy-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.irenical.fetchy</groupId>
-      <artifactId>fetchy-api</artifactId>
-      <version>${project.version}</version>
-    </dependency>
+		<dependency>
+			<groupId>org.irenical.jindy</groupId>
+			<artifactId>jindy-api</artifactId>
+			<version>2.1.0</version>
+		</dependency>
 
-    <dependency>
-      <groupId>org.irenical.jindy</groupId>
-      <artifactId>jindy-api</artifactId>
-      <version>2.1.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.ecwid.consul</groupId>
-      <artifactId>consul-api</artifactId>
-      <version>1.1.10</version>
-    </dependency>
-  </dependencies>
+		<dependency>
+			<groupId>com.ecwid.consul</groupId>
+			<artifactId>consul-api</artifactId>
+			<version>1.1.10</version>
+		</dependency>
+	</dependencies>
 
 </project>
 
