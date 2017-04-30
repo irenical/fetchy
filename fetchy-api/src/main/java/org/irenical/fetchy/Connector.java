@@ -5,6 +5,6 @@ import java.net.URI;
 @FunctionalInterface
 public interface Connector<API> {
 	
-	API getStub(URI node);
+	API connect(URI node) throws ConnectException;
 	
 }

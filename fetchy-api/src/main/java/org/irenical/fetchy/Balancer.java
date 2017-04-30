@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface Balancer {
 	
-	URI balance(List<URI> nodes);
+	URI balance(List<URI> nodes) throws BalanceException;
 
 }

@@ -3,7 +3,7 @@ package org.irenical.fetchy;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class FetchyCallTest {
+public class RegisterTest {
 
 	private String serviceId = "myTestService";
 
@@ -13,7 +13,7 @@ public class FetchyCallTest {
 	@Test
 	public void testConnectorRegistration() {
 		Connector<?> con = uri -> null;
-		fetchy.register(serviceId, con);
+		fetchy.registerConnector(serviceId, con);
 		Assert.assertEquals(con, fetchy.getServiceConnector(serviceId));
 	}
 
@@ -24,19 +24,19 @@ public class FetchyCallTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidConnectorRegistration() {
-		fetchy.register(serviceId, (Connector<?>) null);
+		fetchy.registerConnector(serviceId, (Connector<?>) null);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidConnectorIdRegistration() {
-		fetchy.register(null, (Connector<?>) uri -> null);
+		fetchy.registerConnector(null, (Connector<?>) uri -> null);
 	}
 
 	// Discoverer
 	@Test
 	public void testDiscovererRegistration() {
 		Discoverer disco = id -> null;
-		fetchy.register(serviceId, disco);
+		fetchy.registerDiscoverer(serviceId, disco);
 		Assert.assertEquals(disco, fetchy.getServiceDiscoverer(serviceId));
 	}
 
@@ -47,14 +47,14 @@ public class FetchyCallTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidDiscovererRegistration() {
-		fetchy.register(null, (Discoverer) uri -> null);
+		fetchy.registerDiscoverer(null, (Discoverer) uri -> null);
 	}
 
 	// Balancer
 	@Test
 	public void testBalancerRegistration() {
 		Balancer bal = urls -> null;
-		fetchy.register(serviceId, bal);
+		fetchy.registerBalancer(serviceId, bal);
 		Assert.assertEquals(bal, fetchy.getServiceBalancer(serviceId));
 	}
 
@@ -65,7 +65,7 @@ public class FetchyCallTest {
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testInvalidBalancerRegistration() {
-		fetchy.register(null, (Balancer) uri -> null);
+		fetchy.registerBalancer(null, (Balancer) uri -> null);
 	}
 
 	// Service
