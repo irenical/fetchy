@@ -62,16 +62,20 @@ public class TimeoutTest {
 	}
 	
 	@Test
-	public void testServiceCallTimein() throws SomethingWrongException {
-		String got = fetchy.createRequest(serviceId, MockService.class).callable(api -> api.getSomething())
-			.timeout(timeout).build().execute();
+	public void testServiceCallTimein() {
+		CallableRequest<String,RuntimeException> cr = fetchy.createRequest(serviceId, MockService.class)
+				.callable((Call<String,MockService,RuntimeException>)api -> api.getSomething())
+				.timeout(timeout).build();
+		String got = cr.execute();
 		Assert.assertEquals(output, got);
 	}
 	
 	@Test
-	public void testServiceRunTimein() throws SomethingWrongException {
-		fetchy.createRequest(serviceId, MockService.class).runnable(api -> api.doSomething())
-			.timeout(timeout).build().execute();
+	public void testServiceRunTimein() {
+		RunnableRequest<RuntimeException> rr = fetchy.createRequest(serviceId, MockService.class)
+				.runnable((Run<MockService,RuntimeException>)api -> api.doSomething())
+			.timeout(timeout).build();
+		rr.execute();
 		Assert.assertTrue(service.ran);
 	}
 	
