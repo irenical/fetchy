@@ -6,7 +6,7 @@ public class CallableRequestBuilder<OUTPUT, API, ERROR extends Exception> {
 
 	private String serviceId;
 
-	private Long timeoutMillis;
+	private Integer timeoutMillis;
 
 	private Call<OUTPUT, API, ERROR> callable;
 
@@ -21,7 +21,7 @@ public class CallableRequestBuilder<OUTPUT, API, ERROR extends Exception> {
 		return this;
 	}
 
-	public CallableRequestBuilder<OUTPUT, API, ERROR> timeout(Long timeoutMillis) {
+	public CallableRequestBuilder<OUTPUT, API, ERROR> timeout(Integer timeoutMillis) {
 		this.timeoutMillis = timeoutMillis;
 		return this;
 	}

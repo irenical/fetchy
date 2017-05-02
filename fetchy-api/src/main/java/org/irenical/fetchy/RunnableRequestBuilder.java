@@ -6,7 +6,7 @@ public class RunnableRequestBuilder<API, ERROR extends Exception> {
 
 	private String serviceId;
 
-	private Long timeoutMillis;
+	private Integer timeoutMillis;
 
 	private Run<API, ERROR> runnable;
 
@@ -21,7 +21,7 @@ public class RunnableRequestBuilder<API, ERROR extends Exception> {
 		return this;
 	}
 
-	public RunnableRequestBuilder<API, ERROR> timeout(Long timeoutMillis) {
+	public RunnableRequestBuilder<API, ERROR> timeout(Integer timeoutMillis) {
 		this.timeoutMillis = timeoutMillis;
 		return this;
 	}

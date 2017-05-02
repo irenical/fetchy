@@ -6,7 +6,7 @@ public class RequestBuilder<API> {
 
 	private String serviceId;
 
-	private Long timeoutMillis;
+	private Integer timeoutMillis;
 
 	public RequestBuilder(Fetchy fetchy) {
 		this.fetchy = fetchy;
@@ -17,7 +17,7 @@ public class RequestBuilder<API> {
 		return this;
 	}
 	
-	public RequestBuilder<API> timeout(long millis) {
+	public RequestBuilder<API> timeout(int millis) {
 		this.timeoutMillis = millis;
 		return this;
 	}

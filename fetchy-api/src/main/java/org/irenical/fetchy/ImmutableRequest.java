@@ -9,9 +9,9 @@ public abstract class ImmutableRequest {
 	
 	protected String serviceId;
 	
-	protected Long timeoutMillis;
+	protected Integer timeoutMillis;
 	
-	public ImmutableRequest(Fetchy fetchy, String serviceId, Long timeoutMillis) {
+	public ImmutableRequest(Fetchy fetchy, String serviceId, Integer timeoutMillis) {
 		this.fetchy = fetchy;
 		this.serviceId = serviceId;
 		this.timeoutMillis = timeoutMillis;

@@ -9,7 +9,7 @@ public class ImmutableRunnableRequest<API, ERROR extends Exception> extends Immu
 
 	private RunFallback fallback;
 
-	public ImmutableRunnableRequest(Fetchy fetchy, String serviceId, Long timeoutMillis, Run<API, ERROR> runnable,
+	public ImmutableRunnableRequest(Fetchy fetchy, String serviceId, Integer timeoutMillis, Run<API, ERROR> runnable,
 			RunFallback fallback) {
 		super(fetchy, serviceId, timeoutMillis);
 		this.runnable = runnable;

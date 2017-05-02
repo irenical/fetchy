@@ -4,14 +4,46 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class Fetchy {
+import org.irenical.lifecycle.LifeCycle;
+
+public class Fetchy implements LifeCycle {
 
 	private final Map<String, Discoverer> discos = new ConcurrentHashMap<>();
 
 	private final Map<String, Balancer> bals = new ConcurrentHashMap<>();
 
 	private final Map<String, Connector<?>> cons = new ConcurrentHashMap<>();
+
+	private ExecutorService executorService;
+
+	protected synchronized ExecutorService getExecutorService() {
+		if (executorService == null) {
+			executorService = Executors.newCachedThreadPool();
+		}
+		return executorService;
+	}
+
+	@Override
+	public void start() {
+	}
+
+	@Override
+	public void stop() {
+		if (executorService != null) {
+			executorService.shutdown();
+		}
+		discos.clear();
+		bals.clear();
+		cons.clear();
+	}
+	
+	@Override
+	public <ERROR extends Exception> boolean isRunning() throws ERROR {
+		return true;
+	}
 
 	public void registerDiscoverer(String serviceId, Discoverer discoverer) {
 		if (serviceId == null) {
@@ -79,7 +111,7 @@ public class Fetchy {
 		}
 		return connector.connect(node);
 	}
-	
+
 	public <API> RequestBuilder<API> createRequest(String serviceId, Class<API> apiClass) {
 		return createRequest(serviceId);
 	}

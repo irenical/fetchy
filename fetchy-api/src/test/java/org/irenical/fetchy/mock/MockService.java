@@ -17,6 +17,15 @@ public class MockService {
 	public String getSomethingWrong() throws SomethingWrongException {
 		throw new SomethingWrongException();
 	}
+	
+	public String getSomethingSlowly(long millis) throws SomethingWrongException {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return something;
+	}
 
 	public void doSomething() {
 		ran = true;
@@ -24,6 +33,14 @@ public class MockService {
 	
 	public void doSomethingWrong() throws SomethingWrongException {
 		throw new SomethingWrongException();
+	}
+	
+	public void doSomethingSlowly(long millis) throws SomethingWrongException {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
