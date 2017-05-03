@@ -41,13 +41,13 @@ public class ImmutableRunnableRequest<API, ERROR extends Exception> extends Immu
 					fallback.fallback(e);
 					return;
 				}
-				if(e instanceof RunException) {
-					throw (ERROR) e.getCause();
-				}
 				if (e instanceof ExecutionException) {
 					Throwable cause = e.getCause();
+					if (cause instanceof RunException) {
+						cause = cause.getCause();
+					}
 					if (cause instanceof RuntimeException) {
-						throw (RuntimeException) e;
+						throw (RuntimeException) cause;
 					} else {
 						throw (ERROR) cause;
 					}

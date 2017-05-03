@@ -37,7 +37,7 @@ public class ImmutableCallableRequest<OUTPUT, API, ERROR extends Exception> exte
 				if (e instanceof ExecutionException) {
 					Throwable cause = e.getCause();
 					if (cause instanceof RuntimeException) {
-						throw (RuntimeException) e;
+						throw (RuntimeException) cause;
 					} else {
 						throw (ERROR) cause;
 					}
