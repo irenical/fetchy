@@ -6,10 +6,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import org.irenical.lifecycle.LifeCycle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Fetchy implements LifeCycle {
+
+	private static final Logger LOG = LoggerFactory.getLogger(Fetchy.class);
 
 	private final Map<String, Discoverer> discos = new ConcurrentHashMap<>();
 
@@ -28,24 +31,28 @@ public class Fetchy implements LifeCycle {
 
 	@Override
 	public void start() {
+		LOG.info("Booting up Fetchy");
 	}
 
 	@Override
 	public void stop() {
+		LOG.info("Shutting down Fetchy");
 		if (executorService != null) {
 			executorService.shutdown();
 		}
 		discos.clear();
 		bals.clear();
 		cons.clear();
+		LOG.info("Fetchy shutdown complete");
 	}
-	
+
 	@Override
 	public <ERROR extends Exception> boolean isRunning() throws ERROR {
 		return true;
 	}
 
 	public void registerDiscoverer(String serviceId, Discoverer discoverer) {
+		LOG.debug("Registering discoverer {} on service {}", discoverer, serviceId);
 		if (serviceId == null) {
 			throw new IllegalArgumentException("Service ID cannot be null");
 		}
@@ -53,6 +60,7 @@ public class Fetchy implements LifeCycle {
 	}
 
 	public void registerBalancer(String serviceId, Balancer balancer) {
+		LOG.debug("Registering balancer {} on service {}", balancer, serviceId);
 		if (serviceId == null) {
 			throw new IllegalArgumentException("Service ID cannot be null");
 		}
@@ -60,6 +68,7 @@ public class Fetchy implements LifeCycle {
 	}
 
 	public void registerConnector(String serviceId, Connector<?> connector) {
+		LOG.debug("Registering connector {} on service {}", connector, serviceId);
 		if (serviceId == null) {
 			throw new IllegalArgumentException("Service ID cannot be null");
 		}
@@ -89,6 +98,7 @@ public class Fetchy implements LifeCycle {
 	}
 
 	public List<URI> discover(String serviceId) {
+		LOG.debug("Discovering service {}", serviceId);
 		Discoverer discoverer = getServiceDiscoverer(serviceId);
 		if (discoverer == null) {
 			throw new NoDiscovererException("No discoverer registered for service " + serviceId);
@@ -97,6 +107,7 @@ public class Fetchy implements LifeCycle {
 	}
 
 	public URI balance(String serviceId, List<URI> nodes) {
+		LOG.debug("Balancing service {} across {} nodes", serviceId, nodes.size());
 		Balancer balancer = getServiceBalancer(serviceId);
 		if (balancer == null) {
 			throw new NoBalancerException("No balancer registered for service " + serviceId);
@@ -105,6 +116,7 @@ public class Fetchy implements LifeCycle {
 	}
 
 	public <API> API connect(String serviceId, URI node) {
+		LOG.debug("Connecting service {} to node at {}", serviceId, node);
 		Connector<API> connector = getServiceConnector(serviceId);
 		if (connector == null) {
 			throw new NoConnectorException("No connector registered for service " + serviceId);

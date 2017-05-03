@@ -1,7 +1,7 @@
 package org.irenical.fetchy;
 
 public class RunnableRequestBuilder<API, ERROR extends Exception> {
-
+	
 	private Fetchy fetchy;
 
 	private String serviceId;
