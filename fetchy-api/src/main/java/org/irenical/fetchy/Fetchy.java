@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
+
 import org.irenical.lifecycle.LifeCycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +23,10 @@ public class Fetchy implements LifeCycle {
 
 	private final Map<String, Connector<?>> cons = new ConcurrentHashMap<>();
 
+	private final Map<String, Consumer<RequestResolvedEvent>> listeners = new ConcurrentHashMap<>();
+
+	private final AtomicInteger listenerId = new AtomicInteger(0);
+
 	private ExecutorService executorService;
 
 	protected synchronized ExecutorService getExecutorService() {
@@ -29,6 +36,25 @@ public class Fetchy implements LifeCycle {
 		return executorService;
 	}
 
+	protected void fireEvent(String name, String serviceId, URI node, long elapsedMillis, Throwable error) {
+		getExecutorService().execute(() -> {
+			RequestResolvedEvent e = new RequestResolvedEvent();
+			e.setServiceId(serviceId);
+			e.setNode(node);
+			e.setName(name);
+			e.setElapsedMillis(elapsedMillis);
+			e.setError(error);
+			for (Map.Entry<String, Consumer<RequestResolvedEvent>> entry : listeners.entrySet()) {
+				try {
+					Consumer<RequestResolvedEvent> consumer = entry.getValue();
+					consumer.accept(e);
+				} catch (RuntimeException ex) {
+					LOG.error("Error calling back listener id=" + entry.getKey() + "... ignoring", ex);
+				}
+			}
+		});
+	}
+	
 	@Override
 	public void start() {
 		LOG.info("Booting up Fetchy");
@@ -43,6 +69,7 @@ public class Fetchy implements LifeCycle {
 		discos.clear();
 		bals.clear();
 		cons.clear();
+		listeners.clear();
 		LOG.info("Fetchy shutdown complete");
 	}
 
@@ -107,7 +134,7 @@ public class Fetchy implements LifeCycle {
 	}
 
 	public URI balance(String serviceId, List<URI> nodes) {
-		LOG.debug("Balancing service {} across {} nodes", serviceId, nodes.size());
+		LOG.debug("Balancing service {} across {} nodes", serviceId, nodes == null ? 0 : nodes.size());
 		Balancer balancer = getServiceBalancer(serviceId);
 		if (balancer == null) {
 			throw new NoBalancerException("No balancer registered for service " + serviceId);
@@ -122,6 +149,23 @@ public class Fetchy implements LifeCycle {
 			throw new NoConnectorException("No connector registered for service " + serviceId);
 		}
 		return connector.connect(node);
+	}
+
+	public void listen(Consumer<RequestResolvedEvent> listener) {
+		LOG.debug("Registering request listener {}", listener);
+		if (listener == null) {
+			throw new IllegalArgumentException("Listener cannot be null");
+		}
+		String id = "listener:" + listenerId.incrementAndGet();
+		listeners.put(id, listener);
+	}
+
+	public void unlisten(String id) {
+		LOG.debug("Unregistering request listener {}", id);
+		if (id == null) {
+			throw new IllegalArgumentException("Listener ID cannot be null");
+		}
+		listeners.remove(id);
 	}
 
 	public <API> RequestBuilder<API> createRequest(String serviceId, Class<API> apiClass) {

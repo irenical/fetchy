@@ -1,33 +1,40 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.irenical.fetchy</groupId>
-    <artifactId>fetchy</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
-  </parent>
+	<parent>
+		<groupId>org.irenical.fetchy</groupId>
+		<artifactId>fetchy</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
 
-  <artifactId>fetchy-api</artifactId>
-  
-  <packaging>jar</packaging>
+	<artifactId>fetchy-api</artifactId>
 
-  <name>Fetchy API</name>
-  <description>Fetchy - Service Discovery API</description>
+	<packaging>jar</packaging>
 
-  <developers>
-    <developer>
-      <name>Diogo Neves</name>
-      <email>diogo.sousa.neves@gmail.com</email>
-    </developer>
-  </developers>
+	<name>Fetchy API</name>
+	<description>Fetchy - Service Discovery API</description>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.irenical.lifecycle</groupId>
-      <artifactId>lifecycle</artifactId>
-      <version>1.0.2</version>
-    </dependency>
-  </dependencies>
+	<developers>
+		<developer>
+			<name>Diogo Neves</name>
+			<email>diogo.sousa.neves@gmail.com</email>
+		</developer>
+	</developers>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.irenical.lifecycle</groupId>
+			<artifactId>lifecycle</artifactId>
+			<version>1.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
 </project>
 

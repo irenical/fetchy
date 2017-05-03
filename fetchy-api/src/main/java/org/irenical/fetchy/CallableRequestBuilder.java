@@ -5,6 +5,8 @@ public class CallableRequestBuilder<OUTPUT, API, ERROR extends Exception> {
 	private Fetchy fetchy;
 
 	private String serviceId;
+	
+	private String name;
 
 	private Integer timeoutMillis;
 
@@ -25,6 +27,11 @@ public class CallableRequestBuilder<OUTPUT, API, ERROR extends Exception> {
 		this.timeoutMillis = timeoutMillis;
 		return this;
 	}
+	
+	public CallableRequestBuilder<OUTPUT, API, ERROR> name(String name) {
+		this.name = name;
+		return this;
+	}
 
 	public CallableRequestBuilder<OUTPUT, API, ERROR> callable(Call<OUTPUT, API, ERROR> lambda) {
 		this.callable = lambda;
@@ -37,7 +44,7 @@ public class CallableRequestBuilder<OUTPUT, API, ERROR extends Exception> {
 	}
 
 	public CallableRequest<OUTPUT, ERROR> build() {
-		return new ImmutableCallableRequest<>(fetchy, serviceId, timeoutMillis, callable, fallback);
+		return new ImmutableCallableRequest<>(name, fetchy, serviceId, timeoutMillis, callable, fallback);
 	}
 
 }

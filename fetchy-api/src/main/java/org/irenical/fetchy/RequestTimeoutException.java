@@ -1,6 +1,6 @@
 package org.irenical.fetchy;
 
-public class RequestTimeoutException extends RequestException {
+public class RequestTimeoutException extends RequestAbortException {
 
 	private static final long serialVersionUID = 1L;
 

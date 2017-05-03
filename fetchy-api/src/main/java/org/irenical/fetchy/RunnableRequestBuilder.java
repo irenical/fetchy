@@ -7,6 +7,8 @@ public class RunnableRequestBuilder<API, ERROR extends Exception> {
 	private String serviceId;
 
 	private Integer timeoutMillis;
+	
+	private String name;
 
 	private Run<API, ERROR> runnable;
 
@@ -25,6 +27,11 @@ public class RunnableRequestBuilder<API, ERROR extends Exception> {
 		this.timeoutMillis = timeoutMillis;
 		return this;
 	}
+	
+	public RunnableRequestBuilder<API, ERROR> name(String name) {
+		this.name = name;
+		return this;
+	}
 
 	public RunnableRequestBuilder<API, ERROR> runnable(Run<API, ERROR> lambda) {
 		this.runnable = lambda;
@@ -37,7 +44,7 @@ public class RunnableRequestBuilder<API, ERROR extends Exception> {
 	}
 
 	public RunnableRequest<ERROR> build() {
-		return new ImmutableRunnableRequest<>(fetchy, serviceId, timeoutMillis, runnable, fallback);
+		return new ImmutableRunnableRequest<>(name, fetchy, serviceId, timeoutMillis, runnable, fallback);
 	}
 
 }
