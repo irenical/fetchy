@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ListenerTest {
+	
+	private long timeout = 1000;
 
 	private String serviceId = "serviceId";
 
@@ -20,7 +22,7 @@ public class ListenerTest {
 
 	private URI node = URI.create("http://localhost:1337/api");
 
-	private RequestResolvedEvent got = null;
+	private FetchyEvent<?> got = null;
 
 	@Before
 	public void prepare() {
@@ -29,24 +31,30 @@ public class ListenerTest {
 	}
 
 	@Test
-	public void testCallListener() throws InterruptedException {
-		fetchy.listen(e -> {
+	public synchronized void testOnRequestCallListener() throws InterruptedException {
+		String lid = fetchy.onRequest(e -> {
 			Assert.assertEquals(serviceId, e.getServiceId());
 			Assert.assertEquals(node, e.getNode());
 			Assert.assertEquals(callname, e.getName());
-			Assert.assertNull(e.getError());
-			Assert.assertTrue(e.getElapsedMillis() < 100);
+			Assert.assertTrue(e.getElapsedMillis() >= 0);
+			Assert.assertTrue(e.getElapsedMillis() < timeout);
 			got = e;
+			synchronized (ListenerTest.this) {
+				ListenerTest.this.notify();
+			}
 		});
-		String outcome = fetchy.createRequest(serviceId, MockService.class).name(callname)
-				.callable((Call<String, MockService, RuntimeException>) api -> api.getSomething()).build().execute();
-		Assert.assertEquals(outcome, output);
-		int count = 10;
-		while (got == null && count > 0) {
-			Thread.sleep(100);
-			--count;
-		}
+		
+		fetchy.call(serviceId, callname, MockService.class, api -> api.getSomething());
+		this.wait(timeout);
 		Assert.assertNotNull(got);
+		
+		got = null;
+		fetchy.removeListener(lid);
+		
+		fetchy.call(serviceId, callname, MockService.class, api -> api.getSomething());
+		this.wait(timeout);
+		Assert.assertNull(got);
+		
 	}
 
 }

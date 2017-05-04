@@ -25,7 +25,7 @@ public abstract class ImmutableRequest<OUTPUT, API, ERROR extends Exception> {
 	protected final Integer timeoutMillis;
 
 	public ImmutableRequest(String name, Fetchy fetchy, String serviceId, Integer timeoutMillis) {
-		this.name = name == null ? "request@" + serviceId : name;
+		this.name = name;
 		this.fetchy = fetchy;
 		this.serviceId = serviceId;
 		this.timeoutMillis = timeoutMillis;
@@ -54,13 +54,16 @@ public abstract class ImmutableRequest<OUTPUT, API, ERROR extends Exception> {
 		}
 	}
 
-	private URI attemptDiscover() {
+	private URI attemptDiscover(long start) {
 		Discoverer disco = fetchy.getServiceDiscoverer(serviceId);
 		if (disco != null) {
 			List<URI> uris = disco.discover(serviceId);
+			fetchy.fireDiscover(name, serviceId, uris, TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
 			Balancer bal = fetchy.getServiceBalancer(serviceId);
 			if (bal != null) {
-				return bal.balance(uris);
+				URI node = bal.balance(uris);
+				fetchy.fireBalance(name, serviceId, node, TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
+				return node;
 			} else if (uris != null && !uris.isEmpty()) {
 				return uris.get(0);
 			}
@@ -74,8 +77,9 @@ public abstract class ImmutableRequest<OUTPUT, API, ERROR extends Exception> {
 		OUTPUT result = null;
 		Throwable error = null;
 		try {
-			node = attemptDiscover();
+			node = attemptDiscover(start);
 			API api = fetchy.connect(serviceId, node);
+			fetchy.fireConnect(name, serviceId, node, api, TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
 			Callable<OUTPUT> callable = getCallable(api);
 			if (timeoutMillis != null && timeoutMillis > 0) {
 				Future<OUTPUT> future = fetchy.getExecutorService().submit(callable);
@@ -83,6 +87,7 @@ public abstract class ImmutableRequest<OUTPUT, API, ERROR extends Exception> {
 			} else {
 				result = callable.call();
 			}
+			fetchy.fireRequest(name, serviceId, node, TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
 		} catch (Exception e) {
 			boolean raise = true;
 			error = determineError(e);
@@ -100,7 +105,9 @@ public abstract class ImmutableRequest<OUTPUT, API, ERROR extends Exception> {
 				throwError(error);
 			}
 		} finally {
-			fetchy.fireEvent(name, serviceId, node, TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start), error);
+			if (error != null) {
+				fetchy.fireError(name, serviceId, node, error, TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
+			}
 		}
 		return result;
 	}
