@@ -8,7 +8,7 @@ import org.irenical.fetchy.mock.MockService;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class SimpleCallTest {
+public class RequestTest {
 
 	private String serviceId = "serviceId";
 
@@ -124,6 +124,54 @@ public class SimpleCallTest {
 
 		fetchy.run(serviceId, MockService.class, api -> api.doSomething());
 		Assert.assertTrue(service.ran);
+	}
+	
+	@Test
+	public void testRequestBuilder1() {
+		String output = "Hello";
+		
+		fetchy.registerConnector(serviceId, uri -> new MockService(output));
+		
+		RequestBuilder<MockService> rb = fetchy.createRequest(serviceId);
+		String outcome = rb.callable(api -> api.getSomething()).build().execute();
+		
+		Assert.assertEquals(output, outcome);
+	}
+	
+	@Test
+	public void testRequestBuilder2() {
+		String output = "Hello";
+		
+		fetchy.registerConnector(serviceId, uri -> new MockService(output));
+		
+		RequestBuilder<MockService> rb = fetchy.createRequest(serviceId, MockService.class);
+		String outcome = rb.callable(api -> api.getSomething()).build().execute();
+		
+		Assert.assertEquals(output, outcome);
+	}
+	
+	@Test
+	public void testRequestBuilder3() {
+		String output = "Hello";
+		
+		fetchy.registerConnector(serviceId, uri -> new MockService(output));
+		
+		RequestBuilder<MockService> rb = fetchy.createRequest(serviceId, "callName");
+		String outcome = rb.callable(api -> api.getSomething()).build().execute();
+		
+		Assert.assertEquals(output, outcome);
+	}
+	
+	@Test
+	public void testRequestBuilder4() {
+		String output = "Hello";
+		
+		fetchy.registerConnector(serviceId, uri -> new MockService(output));
+		
+		RequestBuilder<MockService> rb = fetchy.createRequest(serviceId, "callName", MockService.class);
+		String outcome = rb.callable(api -> api.getSomething()).build().execute();
+		
+		Assert.assertEquals(output, outcome);
 	}
 
 }

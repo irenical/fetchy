@@ -281,11 +281,6 @@ public class Fetchy implements LifeCycle {
 		return call(serviceId, requestName, call);
 	}
 
-	public <OUTPUT, API, ERROR extends Exception> OUTPUT call(String serviceId, Call<OUTPUT, API, ERROR> call)
-			throws ERROR {
-		return call(serviceId, (String) null, call);
-	}
-
 	public <OUTPUT, API, ERROR extends Exception> OUTPUT call(String serviceId, String requestName,
 			Call<OUTPUT, API, ERROR> call) throws ERROR {
 		RequestBuilder<API> rb = createRequest(serviceId, requestName);
@@ -300,10 +295,6 @@ public class Fetchy implements LifeCycle {
 	public <API, ERROR extends Exception> void run(String serviceId, String requestName, Class<API> apiClass,
 			Run<API, ERROR> run) throws ERROR {
 		run(serviceId, requestName, run);
-	}
-
-	public <API, ERROR extends Exception> void run(String serviceId, Run<API, ERROR> run) throws ERROR {
-		run(serviceId, (String) null, run);
 	}
 
 	public <API, ERROR extends Exception> void run(String serviceId, String requestName, Run<API, ERROR> run)

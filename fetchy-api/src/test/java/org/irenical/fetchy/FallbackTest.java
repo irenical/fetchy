@@ -1,5 +1,8 @@
 package org.irenical.fetchy;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import org.irenical.fetchy.mock.MockService;
 import org.irenical.fetchy.mock.SomethingWrongException;
 import org.junit.Assert;
@@ -10,10 +13,12 @@ public class FallbackTest {
 	private String output = "Hello";
 
 	private String fallbackOutput = "Bye";
-	
+
 	private boolean fallbackRan = false;
 
 	private String serviceId = "serviceId";
+
+	private long timeout = 10000;
 
 	private Fetchy fetchy = new Fetchy();
 
@@ -26,7 +31,7 @@ public class FallbackTest {
 
 		fetchy.call(serviceId, MockService.class, MockService::getSomethingWrong);
 	}
-	
+
 	@Test(expected = DiscoverException.class)
 	public void testNoFallbackOnDiscoverRun() throws SomethingWrongException {
 		fetchy.registerDiscoverer(serviceId, sid -> {
@@ -49,7 +54,7 @@ public class FallbackTest {
 
 		Assert.assertEquals(fallbackOutput, got);
 	}
-	
+
 	@Test
 	public void testFallbackOnDiscoverRun() throws SomethingWrongException {
 		fetchy.registerDiscoverer(serviceId, sid -> {
@@ -57,8 +62,9 @@ public class FallbackTest {
 		});
 		fetchy.registerConnector(serviceId, uri -> new MockService(output));
 
-		fetchy.createRequest(serviceId, MockService.class).runnable(MockService::doSomethingWrong)
-				.fallback(e -> {fallbackRan=true;}).build().execute();
+		fetchy.createRequest(serviceId, MockService.class).runnable(MockService::doSomethingWrong).fallback(e -> {
+			fallbackRan = true;
+		}).build().execute();
 
 		Assert.assertTrue(fallbackRan);
 	}
@@ -73,7 +79,7 @@ public class FallbackTest {
 
 		fetchy.call(serviceId, MockService.class, MockService::getSomethingWrong);
 	}
-	
+
 	@Test
 	public void testFallbackOnBalancingCall() throws SomethingWrongException {
 		fetchy.registerDiscoverer(serviceId, sid -> null);
@@ -87,7 +93,7 @@ public class FallbackTest {
 
 		Assert.assertEquals(fallbackOutput, got);
 	}
-	
+
 	@Test(expected = ConnectException.class)
 	public void testNoFallbackOnConnectCall() throws SomethingWrongException {
 		fetchy.registerDiscoverer(serviceId, sid -> null);
@@ -97,7 +103,7 @@ public class FallbackTest {
 		});
 		fetchy.call(serviceId, MockService.class, MockService::getSomethingWrong);
 	}
-	
+
 	@Test
 	public void testFallbackOnConnectCall() throws SomethingWrongException {
 		fetchy.registerDiscoverer(serviceId, sid -> null);
@@ -109,7 +115,7 @@ public class FallbackTest {
 				.fallback(e -> fallbackOutput).build().execute();
 		Assert.assertEquals(fallbackOutput, got);
 	}
-	
+
 	@Test(expected = SomethingWrongException.class)
 	public void testNoFallbackOnServiceCall() throws SomethingWrongException {
 		fetchy.registerDiscoverer(serviceId, sid -> null);
@@ -117,7 +123,7 @@ public class FallbackTest {
 		fetchy.registerConnector(serviceId, uri -> new MockService(output));
 		fetchy.call(serviceId, MockService.class, MockService::getSomethingWrong);
 	}
-	
+
 	@Test(expected = SomethingWrongException.class)
 	public void testNoFallbackOnServiceRun() throws SomethingWrongException {
 		fetchy.registerDiscoverer(serviceId, sid -> null);
@@ -125,7 +131,7 @@ public class FallbackTest {
 		fetchy.registerConnector(serviceId, uri -> new MockService(output));
 		fetchy.run(serviceId, MockService.class, MockService::doSomethingWrong);
 	}
-	
+
 	@Test
 	public void testFallbackOnServiceCall() throws SomethingWrongException {
 		fetchy.registerDiscoverer(serviceId, sid -> null);
@@ -135,15 +141,26 @@ public class FallbackTest {
 				.fallback(e -> fallbackOutput).build().execute();
 		Assert.assertEquals(fallbackOutput, got);
 	}
-	
+
 	@Test
 	public void testFallbackOnServiceRun() throws SomethingWrongException {
 		fetchy.registerDiscoverer(serviceId, sid -> null);
 		fetchy.registerBalancer(serviceId, uris -> null);
 		fetchy.registerConnector(serviceId, uri -> new MockService(output));
-		fetchy.createRequest(serviceId, MockService.class).runnable(MockService::doSomethingWrong)
-				.fallback(e -> {fallbackRan=true;}).build().execute();
+		fetchy.createRequest(serviceId, MockService.class).runnable(MockService::doSomethingWrong).fallback(e -> {
+			fallbackRan = true;
+		}).build().execute();
 		Assert.assertTrue(fallbackRan);
+	}
+
+	@Test(expected = SomethingWrongException.class)
+	public void testFallbackErrorOnServiceRun() throws SomethingWrongException {
+		fetchy.registerDiscoverer(serviceId, sid -> null);
+		fetchy.registerBalancer(serviceId, uris -> null);
+		fetchy.registerConnector(serviceId, uri -> new MockService(output));
+		fetchy.createRequest(serviceId, MockService.class).runnable(MockService::doSomethingWrong).fallback(e -> {
+			throw new RuntimeException();
+		}).build().execute();
 	}
 
 }

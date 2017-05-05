@@ -98,7 +98,7 @@ public abstract class ImmutableRequest<OUTPUT, API, ERROR extends Exception> {
 					raise = false;
 				} catch (Exception fallbackError) {
 					LOG.error("Error attempting to run fallback method on request '" + name + "', service '" + serviceId
-							+ "'", e);
+							+ "'", fallbackError);
 				}
 			}
 			if (raise) {
