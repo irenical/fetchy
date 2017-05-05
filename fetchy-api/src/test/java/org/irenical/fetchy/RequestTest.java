@@ -127,7 +127,7 @@ public class RequestTest {
 	}
 	
 	@Test
-	public void testRequestBuilder1() {
+	public void testRequestBuilder1() throws Exception {
 		String output = "Hello";
 		
 		fetchy.registerConnector(serviceId, uri -> new MockService(output));
@@ -139,7 +139,7 @@ public class RequestTest {
 	}
 	
 	@Test
-	public void testRequestBuilder2() {
+	public void testRequestBuilder2() throws Exception {
 		String output = "Hello";
 		
 		fetchy.registerConnector(serviceId, uri -> new MockService(output));
@@ -151,7 +151,7 @@ public class RequestTest {
 	}
 	
 	@Test
-	public void testRequestBuilder3() {
+	public void testRequestBuilder3() throws Exception {
 		String output = "Hello";
 		
 		fetchy.registerConnector(serviceId, uri -> new MockService(output));
@@ -163,7 +163,7 @@ public class RequestTest {
 	}
 	
 	@Test
-	public void testRequestBuilder4() {
+	public void testRequestBuilder4() throws Exception {
 		String output = "Hello";
 		
 		fetchy.registerConnector(serviceId, uri -> new MockService(output));
