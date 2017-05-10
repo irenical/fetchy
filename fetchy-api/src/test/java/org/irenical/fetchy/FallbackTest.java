@@ -1,8 +1,8 @@
 package org.irenical.fetchy;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
+import org.irenical.fetchy.balancer.BalanceException;
+import org.irenical.fetchy.connector.ConnectException;
+import org.irenical.fetchy.discoverer.DiscoverException;
 import org.irenical.fetchy.mock.MockService;
 import org.irenical.fetchy.mock.SomethingWrongException;
 import org.junit.Assert;

@@ -1,5 +1,8 @@
 package org.irenical.fetchy;
 
+import org.irenical.fetchy.balancer.Balancer;
+import org.irenical.fetchy.connector.Connector;
+import org.irenical.fetchy.discoverer.Discoverer;
 import org.junit.Assert;
 import org.junit.Test;
 

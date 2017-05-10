@@ -4,6 +4,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.irenical.fetchy.mock.MockService;
 import org.irenical.fetchy.mock.SomethingWrongException;
+import org.irenical.fetchy.request.Call;
+import org.irenical.fetchy.request.CallableRequest;
+import org.irenical.fetchy.request.RequestTimeoutException;
+import org.irenical.fetchy.request.Run;
+import org.irenical.fetchy.request.RunnableRequest;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -64,7 +69,7 @@ public class TimeoutTest {
 	@Test
 	public void testServiceCallTimein() {
 		CallableRequest<String,RuntimeException> cr = fetchy.createRequest(serviceId, MockService.class)
-				.callable((Call<String,MockService,RuntimeException>)api -> api.getSomething())
+				.callable((Call<String,MockService,RuntimeException>) api -> api.getSomething())
 				.timeout(timeout).build();
 		String got = cr.execute();
 		Assert.assertEquals(output, got);
@@ -89,7 +94,7 @@ public class TimeoutTest {
 	@Test
 	public void testServiceRunTimein() {
 		RunnableRequest<RuntimeException> rr = fetchy.createRequest(serviceId, MockService.class)
-				.runnable((Run<MockService,RuntimeException>)api -> api.doSomething())
+				.runnable((Run<MockService,RuntimeException>) api -> api.doSomething())
 			.timeout(timeout).build();
 		rr.execute();
 		Assert.assertTrue(service.ran);

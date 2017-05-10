@@ -9,6 +9,15 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
+import org.irenical.fetchy.balancer.Balancer;
+import org.irenical.fetchy.balancer.BalancerMissingException;
+import org.irenical.fetchy.connector.Connector;
+import org.irenical.fetchy.connector.ConnectorMissingException;
+import org.irenical.fetchy.discoverer.Discoverer;
+import org.irenical.fetchy.discoverer.DiscovererMissingException;
+import org.irenical.fetchy.request.Call;
+import org.irenical.fetchy.request.RequestBuilder;
+import org.irenical.fetchy.request.Run;
 import org.irenical.lifecycle.LifeCycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,30 +64,30 @@ public class Fetchy implements LifeCycle {
 
 	private ExecutorService executorService;
 
-	protected synchronized ExecutorService getExecutorService() {
+	public synchronized ExecutorService getExecutorService() {
 		if (executorService == null) {
 			executorService = Executors.newCachedThreadPool();
 		}
 		return executorService;
 	}
 
-	protected void fireDiscover(String name, String serviceId, List<URI> nodes, long elapsedMillis) {
+	public void fireDiscover(String name, String serviceId, List<URI> nodes, long elapsedMillis) {
 		fire(discoverListeners, name, serviceId, null, nodes, elapsedMillis);
 	}
 
-	protected void fireBalance(String name, String serviceId, URI node, long elapsedMillis) {
+	public void fireBalance(String name, String serviceId, URI node, long elapsedMillis) {
 		fire(balanceListeners, name, serviceId, node, node, elapsedMillis);
 	}
 
-	protected void fireConnect(String name, String serviceId, URI node, Object stub, long elapsedMillis) {
+	public void fireConnect(String name, String serviceId, URI node, Object stub, long elapsedMillis) {
 		fire(connectListeners, name, serviceId, node, stub, elapsedMillis);
 	}
 
-	protected void fireRequest(String name, String serviceId, URI node, long elapsedMillis) {
+	public void fireRequest(String name, String serviceId, URI node, long elapsedMillis) {
 		fire(requestListeners, name, serviceId, node, null, elapsedMillis);
 	}
 
-	protected void fireError(String name, String serviceId, URI node, Throwable error, long elapsedMillis) {
+	public void fireError(String name, String serviceId, URI node, Throwable error, long elapsedMillis) {
 		fire(errorListeners, name, serviceId, node, error, elapsedMillis);
 	}
 

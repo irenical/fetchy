@@ -1,5 +1,8 @@
 package org.irenical.fetchy;
 
+import org.irenical.fetchy.balancer.BalanceException;
+import org.irenical.fetchy.connector.ConnectException;
+import org.irenical.fetchy.discoverer.DiscoverException;
 import org.junit.Assert;
 import org.junit.Test;
 
