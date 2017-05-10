@@ -1,41 +1,43 @@
 package org.irenical.fetchy.discoverer;
 
-import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.irenical.fetchy.Fetchy;
-import org.irenical.fetchy.discoverer.DiscoverException;
-import org.irenical.fetchy.discoverer.Discoverer;
-import org.irenical.fetchy.discoverer.DiscovererMissingException;
+import org.irenical.fetchy.Node;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 public class DiscoverTest {
-	
+
 	private String nonExistingServiceId = "nonexisting";
-	
+
 	private String faultyServiceId = "faultyService";
-	
+
 	private Discoverer faultyDisco = id -> {throw new DiscoverException("blew up");};
-	
+
 	private String nullServiceId = "nullService";
-	
+
 	private Discoverer nullDisco = id -> null;
 
 	private String emptyServiceId = "emptyService";
-	
+
 	private Discoverer emptyDisco = id -> Collections.emptyList();
-	
+
 	private String singleServiceId = "singleService";
-	
-	private Discoverer singleDisco = id -> Collections.singletonList(URI.create("http://localhost:80"));
+
+	private static final Node SINGLE_NODE = new Node("http://localhost:80");
+
+	private Discoverer singleDisco = id -> Collections.singletonList(SINGLE_NODE);
 	
 	private String multipleServiceId = "multipleService";
-	
-	private Discoverer multipleDisco = id -> Arrays.asList(URI.create("http://127.0.0.1:81"), URI.create("http://[::1]:82"));
+
+	private static final Node MULTI_NODE_FIRST = new Node("http://127.0.0.1:81");
+	private static final Node MULTI_NODE_SECOND = new Node("http://[::1]:82");
+
+	private Discoverer multipleDisco = id -> Arrays.asList(MULTI_NODE_FIRST, MULTI_NODE_SECOND);
 	
 	private Fetchy fetchy = new Fetchy();
 	
@@ -61,45 +63,39 @@ public class DiscoverTest {
 	
 	@Test
 	public void testNullDiscovery() throws DiscoverException, DiscovererMissingException {
-		List<URI> got = fetchy.discover(nullServiceId);
+		List<Node> got = fetchy.discover(nullServiceId);
 		Assert.assertNull(got);
 	}
 	
 	@Test
 	public void testEmptyDiscovery() throws DiscoverException, DiscovererMissingException {
-		List<URI> got = fetchy.discover(emptyServiceId);
+		List<Node> got = fetchy.discover(emptyServiceId);
 		Assert.assertNotNull(got);
 		Assert.assertEquals(0,got.size());
 	}
 	
 	@Test
 	public void testSingleDiscovery() throws DiscoverException, DiscovererMissingException {
-		List<URI> got = fetchy.discover(singleServiceId);
+		List<Node> got = fetchy.discover(singleServiceId);
 		Assert.assertNotNull(got);
 		Assert.assertEquals(1,got.size());
-		URI uri = got.get(0);
-		Assert.assertNotNull(uri);
-		Assert.assertEquals("http", uri.getScheme());
-		Assert.assertEquals("localhost", uri.getHost());
-		Assert.assertEquals(80, uri.getPort());
+		Node node = got.get(0);
+		Assert.assertNotNull(node);
+		Assert.assertEquals(SINGLE_NODE, node);
 	}
-	
+
 	@Test
 	public void testMultipleDiscovery() throws DiscoverException, DiscovererMissingException {
-		List<URI> got = fetchy.discover(multipleServiceId);
+		List<Node> got = fetchy.discover(multipleServiceId);
 		Assert.assertNotNull(got);
 		Assert.assertEquals(2,got.size());
-		URI uri1 = got.get(0);
-		Assert.assertNotNull(uri1);
-		Assert.assertEquals("http", uri1.getScheme());
-		Assert.assertEquals("127.0.0.1", uri1.getHost());
-		Assert.assertEquals(81, uri1.getPort());
-		
-		URI uri2 = got.get(1);
-		Assert.assertNotNull(uri2);
-		Assert.assertEquals("http", uri2.getScheme());
-		Assert.assertEquals("[::1]", uri2.getHost());
-		Assert.assertEquals(82, uri2.getPort());
+		Node node1 = got.get(0);
+		Assert.assertNotNull(node1);
+		Assert.assertEquals(MULTI_NODE_FIRST, node1);
+
+		Node node2 = got.get(1);
+		Assert.assertNotNull(node2);
+		Assert.assertEquals(MULTI_NODE_SECOND, node2);
 	}
 
 }

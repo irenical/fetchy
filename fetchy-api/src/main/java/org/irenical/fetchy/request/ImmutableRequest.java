@@ -3,6 +3,7 @@ package org.irenical.fetchy.request;
 import org.irenical.fetchy.Fetchy;
 import org.irenical.fetchy.Node;
 import org.irenical.fetchy.balancer.Balancer;
+import org.irenical.fetchy.connector.Stub;
 import org.irenical.fetchy.discoverer.Discoverer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,14 +82,14 @@ public abstract class ImmutableRequest<OUTPUT, API, ERROR extends Exception> {
         Throwable error = null;
         try {
             node = attemptDiscover(start);
-            API api = fetchy.connect(serviceId, node);
-            fetchy.fireConnect(name, serviceId, node, api, TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
-            Callable<OUTPUT> callable = getCallable(api);
+            Stub<API> api = fetchy.connect(serviceId, node);
+            fetchy.fireConnect(name, serviceId, node, api.get(), TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
+            Callable<OUTPUT> callable = getCallable(api.get());
             if (timeoutMillis != null && timeoutMillis > 0) {
-                Future<OUTPUT> future = fetchy.getExecutorService().submit(callable);
+                Future<OUTPUT> future = fetchy.getExecutorService().submit(() -> doRequest(api, callable));
                 result = future.get(timeoutMillis, TimeUnit.MILLISECONDS);
             } else {
-                result = callable.call();
+                result = doRequest(api, callable);
             }
             fetchy.fireRequest(name, serviceId, node, TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
         } catch (Exception e) {
@@ -113,6 +114,16 @@ public abstract class ImmutableRequest<OUTPUT, API, ERROR extends Exception> {
             }
         }
         return result;
+    }
+
+    private OUTPUT doRequest(Stub<API> api, Callable<OUTPUT> callable) throws Exception {
+        api.onBeforeExecute();
+
+        try {
+            return callable.call();
+        } finally {
+            api.onAfterExecute();
+        }
     }
 
     protected abstract Callable<OUTPUT> getCallable(API api);

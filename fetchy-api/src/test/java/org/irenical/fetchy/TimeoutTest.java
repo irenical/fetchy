@@ -2,8 +2,8 @@ package org.irenical.fetchy;
 
 import java.util.concurrent.TimeUnit;
 
-import org.irenical.fetchy.mock.MockService;
-import org.irenical.fetchy.mock.SomethingWrongException;
+import org.irenical.fetchy.utils.mock.MockService;
+import org.irenical.fetchy.utils.mock.SomethingWrongException;
 import org.irenical.fetchy.request.Call;
 import org.irenical.fetchy.request.CallableRequest;
 import org.irenical.fetchy.request.RequestTimeoutException;
@@ -37,7 +37,7 @@ public class TimeoutTest {
 	public void prepare() {
 		fetchy.registerDiscoverer(serviceId, sid -> null);
 		fetchy.registerBalancer(serviceId, uris -> null);
-		fetchy.registerConnector(serviceId, uri -> service);
+		fetchy.registerConnector(serviceId, uri -> () -> service);
 	}
 
 	@Test(expected=RequestTimeoutException.class)

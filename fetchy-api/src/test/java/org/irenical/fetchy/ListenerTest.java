@@ -1,10 +1,9 @@
 package org.irenical.fetchy;
 
-import java.net.URI;
 import java.util.Arrays;
 
-import org.irenical.fetchy.mock.MockService;
-import org.irenical.fetchy.mock.SomethingWrongException;
+import org.irenical.fetchy.utils.mock.MockService;
+import org.irenical.fetchy.utils.mock.SomethingWrongException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,8 +22,8 @@ public class ListenerTest {
 
 	private MockService stub = new MockService(output);
 
-	private URI node1 = URI.create("http://localhost:1337/api");
-	private URI node2 = URI.create("http://localhost:1338/api");
+	private Node node1 = new Node("http://localhost:1337/api");
+	private Node node2 = new Node("http://localhost:1338/api");
 
 	private FetchyEvent<?> event = null;
 
@@ -34,7 +33,7 @@ public class ListenerTest {
 	public void prepare() {
 		fetchy.registerDiscoverer(serviceId, sid -> Arrays.asList(node1, node2));
 		fetchy.registerBalancer(serviceId, uris -> uris.get(0));
-		fetchy.registerConnector(serviceId, uri -> stub);
+		fetchy.registerConnector(serviceId, uri -> () -> stub);
 	}
 
 	@Test

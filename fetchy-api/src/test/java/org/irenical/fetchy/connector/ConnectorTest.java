@@ -1,10 +1,7 @@
 package org.irenical.fetchy.connector;
 
 import org.irenical.fetchy.Fetchy;
-import org.irenical.fetchy.connector.ConnectException;
-import org.irenical.fetchy.connector.Connector;
-import org.irenical.fetchy.connector.ConnectorMissingException;
-import org.irenical.fetchy.mock.MockService;
+import org.irenical.fetchy.utils.mock.MockService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +24,7 @@ public class ConnectorTest {
 
 	private MockService service = new MockService("irrelevant");
 
-	private Connector<MockService> workingConnector = uri -> service;
+	private Connector<MockService> workingConnector = uri -> () -> service;
 
 	private Fetchy fetchy = new Fetchy();
 
@@ -51,15 +48,15 @@ public class ConnectorTest {
 
 	@Test
 	public void testNullConnector() throws ConnectorMissingException, ConnectException {
-		MockService got = fetchy.connect(nullServiceId, null);
+		Stub<MockService> got = fetchy.connect(nullServiceId, null);
 		Assert.assertNull(got);
 	}
 
 	@Test
 	public void testWorkingConnector() throws ConnectorMissingException, ConnectException {
-		MockService got = fetchy.connect(workingServiceId, null);
+		Stub<MockService> got = fetchy.connect(workingServiceId, null);
 		Assert.assertNotNull(got);
-		Assert.assertEquals(service, got);
+		Assert.assertEquals(service, got.get());
 	}
 
 }

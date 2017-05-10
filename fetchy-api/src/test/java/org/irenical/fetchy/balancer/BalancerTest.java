@@ -1,9 +1,9 @@
 package org.irenical.fetchy.balancer;
 
-import java.net.URI;
 import java.util.Arrays;
 
 import org.irenical.fetchy.Fetchy;
+import org.irenical.fetchy.Node;
 import org.irenical.fetchy.balancer.BalanceException;
 import org.irenical.fetchy.balancer.Balancer;
 import org.irenical.fetchy.balancer.BalancerMissingException;
@@ -49,17 +49,17 @@ public class BalancerTest {
 	
 	@Test
 	public void testNullBalancer() throws BalancerMissingException, BalanceException {
-		URI uri1 = URI.create("http://127.0.0.1:81");
-		URI uri2 = URI.create("http://[::1]:82");
-		URI got = fetchy.balance(nullServiceId, Arrays.asList(uri1, uri2));
+		Node uri1 = new Node("http://127.0.0.1:81");
+		Node uri2 = new Node("http://[::1]:82");
+		Node got = fetchy.balance(nullServiceId, Arrays.asList(uri1, uri2));
 		Assert.assertNull(got);
 	}
 	
 	@Test
 	public void testFirstBalancer() throws BalancerMissingException, BalanceException {
-		URI uri1 = URI.create("http://127.0.0.1:81");
-		URI uri2 = URI.create("http://[::1]:82");
-		URI got = fetchy.balance(firstServiceId, Arrays.asList(uri1, uri2));
+		Node uri1 = new Node("http://127.0.0.1:81");
+		Node uri2 = new Node("http://[::1]:82");
+		Node got = fetchy.balance(firstServiceId, Arrays.asList(uri1, uri2));
 		Assert.assertNotNull(got);
 		Assert.assertEquals(uri1, got);
 	}

@@ -12,6 +12,7 @@ import org.irenical.fetchy.balancer.Balancer;
 import org.irenical.fetchy.balancer.BalancerMissingException;
 import org.irenical.fetchy.connector.Connector;
 import org.irenical.fetchy.connector.ConnectorMissingException;
+import org.irenical.fetchy.connector.Stub;
 import org.irenical.fetchy.discoverer.Discoverer;
 import org.irenical.fetchy.discoverer.DiscovererMissingException;
 import org.irenical.fetchy.request.Call;
@@ -196,7 +197,7 @@ public class Fetchy implements LifeCycle {
 		return balancer.balance(nodes);
 	}
 
-	public <API> API connect(String serviceId, Node node) {
+	public <API> Stub<API> connect(String serviceId, Node node) {
 		LOG.debug("Connecting service {} to node at {}", serviceId, node);
 		Connector<API> connector = getServiceConnector(serviceId);
 		if (connector == null) {
