@@ -174,7 +174,7 @@ public class Fetchy implements LifeCycle {
 		LOG.debug("Discovering service {}", serviceId);
 		Discoverer discoverer = getServiceDiscoverer(serviceId);
 		if (discoverer == null) {
-			throw new NoDiscovererException("No discoverer registered for service " + serviceId);
+			throw new DiscovererMissingException("No discoverer registered for service " + serviceId);
 		}
 		return discoverer.discover(serviceId);
 	}
@@ -183,7 +183,7 @@ public class Fetchy implements LifeCycle {
 		LOG.debug("Balancing service {} across {} nodes", serviceId, nodes == null ? 0 : nodes.size());
 		Balancer balancer = getServiceBalancer(serviceId);
 		if (balancer == null) {
-			throw new NoBalancerException("No balancer registered for service " + serviceId);
+			throw new BalancerMissingException("No balancer registered for service " + serviceId);
 		}
 		return balancer.balance(nodes);
 	}
@@ -192,7 +192,7 @@ public class Fetchy implements LifeCycle {
 		LOG.debug("Connecting service {} to node at {}", serviceId, node);
 		Connector<API> connector = getServiceConnector(serviceId);
 		if (connector == null) {
-			throw new NoConnectorException("No connector registered for service " + serviceId);
+			throw new ConnectorMissingException("No connector registered for service " + serviceId);
 		}
 		return connector.connect(node);
 	}

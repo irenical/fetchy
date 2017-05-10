@@ -33,18 +33,18 @@ public class BalancerTest {
 	}
 	
 	// Balancer
-	@Test(expected=NoBalancerException.class)
-	public void testNoBalancer() throws NoBalancerException, BalanceException {
+	@Test(expected=BalancerMissingException.class)
+	public void testNoBalancer() throws BalancerMissingException, BalanceException {
 		fetchy.balance(nonExistingServiceId, null);
 	}
 	
 	@Test(expected=BalanceException.class)
-	public void testFaultyBalancer() throws NoBalancerException, BalanceException {
+	public void testFaultyBalancer() throws BalancerMissingException, BalanceException {
 		fetchy.balance(faultyServiceId, null);
 	}
 	
 	@Test
-	public void testNullBalancer() throws NoBalancerException, BalanceException {
+	public void testNullBalancer() throws BalancerMissingException, BalanceException {
 		URI uri1 = URI.create("http://127.0.0.1:81");
 		URI uri2 = URI.create("http://[::1]:82");
 		URI got = fetchy.balance(nullServiceId, Arrays.asList(uri1, uri2));
@@ -52,7 +52,7 @@ public class BalancerTest {
 	}
 	
 	@Test
-	public void testFirstBalancer() throws NoBalancerException, BalanceException {
+	public void testFirstBalancer() throws BalancerMissingException, BalanceException {
 		URI uri1 = URI.create("http://127.0.0.1:81");
 		URI uri2 = URI.create("http://[::1]:82");
 		URI got = fetchy.balance(firstServiceId, Arrays.asList(uri1, uri2));

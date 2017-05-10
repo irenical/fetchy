@@ -45,31 +45,31 @@ public class DiscoverTest {
 	}
 
 	// Discoverer
-	@Test(expected=NoDiscovererException.class)
-	public void testNoDiscoverer() throws DiscoverException, NoDiscovererException {
+	@Test(expected=DiscovererMissingException.class)
+	public void testNoDiscoverer() throws DiscoverException, DiscovererMissingException {
 		fetchy.discover(nonExistingServiceId);
 	}
 	
 	@Test(expected=DiscoverException.class)
-	public void testFaultyDiscoverer() throws DiscoverException, NoDiscovererException {
+	public void testFaultyDiscoverer() throws DiscoverException, DiscovererMissingException {
 		fetchy.discover(faultyServiceId);
 	}
 	
 	@Test
-	public void testNullDiscovery() throws DiscoverException, NoDiscovererException {
+	public void testNullDiscovery() throws DiscoverException, DiscovererMissingException {
 		List<URI> got = fetchy.discover(nullServiceId);
 		Assert.assertNull(got);
 	}
 	
 	@Test
-	public void testEmptyDiscovery() throws DiscoverException, NoDiscovererException {
+	public void testEmptyDiscovery() throws DiscoverException, DiscovererMissingException {
 		List<URI> got = fetchy.discover(emptyServiceId);
 		Assert.assertNotNull(got);
 		Assert.assertEquals(0,got.size());
 	}
 	
 	@Test
-	public void testSingleDiscovery() throws DiscoverException, NoDiscovererException {
+	public void testSingleDiscovery() throws DiscoverException, DiscovererMissingException {
 		List<URI> got = fetchy.discover(singleServiceId);
 		Assert.assertNotNull(got);
 		Assert.assertEquals(1,got.size());
@@ -81,7 +81,7 @@ public class DiscoverTest {
 	}
 	
 	@Test
-	public void testMultipleDiscovery() throws DiscoverException, NoDiscovererException {
+	public void testMultipleDiscovery() throws DiscoverException, DiscovererMissingException {
 		List<URI> got = fetchy.discover(multipleServiceId);
 		Assert.assertNotNull(got);
 		Assert.assertEquals(2,got.size());

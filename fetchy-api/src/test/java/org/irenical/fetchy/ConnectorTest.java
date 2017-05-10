@@ -35,24 +35,24 @@ public class ConnectorTest {
 	}
 
 	// Balancer
-	@Test(expected = NoConnectorException.class)
-	public void testNoConnector() throws NoConnectorException, ConnectException {
+	@Test(expected = ConnectorMissingException.class)
+	public void testNoConnector() throws ConnectorMissingException, ConnectException {
 		fetchy.connect(nonExistingServiceId, null);
 	}
 
 	@Test(expected = ConnectException.class)
-	public void testFaultyConnector() throws NoConnectorException, ConnectException {
+	public void testFaultyConnector() throws ConnectorMissingException, ConnectException {
 		fetchy.connect(faultyServiceId, null);
 	}
 
 	@Test
-	public void testNullConnector() throws NoConnectorException, ConnectException {
+	public void testNullConnector() throws ConnectorMissingException, ConnectException {
 		MockService got = fetchy.connect(nullServiceId, null);
 		Assert.assertNull(got);
 	}
 
 	@Test
-	public void testWorkingConnector() throws NoConnectorException, ConnectException {
+	public void testWorkingConnector() throws ConnectorMissingException, ConnectException {
 		MockService got = fetchy.connect(workingServiceId, null);
 		Assert.assertNotNull(got);
 		Assert.assertEquals(service, got);
