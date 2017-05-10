@@ -1,10 +1,11 @@
 package org.irenical.fetchy.balancer;
 
-import java.net.URI;
+import org.irenical.fetchy.Node;
+
 import java.util.List;
 
 public interface Balancer {
-	
-	URI balance(List<URI> nodes) throws BalanceException;
+
+	Node balance(List<Node> nodes) throws BalanceException;
 
 }

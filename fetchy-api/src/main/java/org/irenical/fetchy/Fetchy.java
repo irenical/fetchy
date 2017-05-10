@@ -1,6 +1,5 @@
 package org.irenical.fetchy;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,11 +41,11 @@ public class Fetchy implements LifeCycle {
 
 	private final Map<String, Connector<?>> cons = new ConcurrentHashMap<>();
 
-	private final Map<String, Consumer<FetchyEvent<List<URI>>>> discoverListeners = new ConcurrentHashMap<>();
+	private final Map<String, Consumer<FetchyEvent<List<Node>>>> discoverListeners = new ConcurrentHashMap<>();
 
 	private final AtomicInteger discoverListenerId = new AtomicInteger(0);
 
-	private final Map<String, Consumer<FetchyEvent<URI>>> balanceListeners = new ConcurrentHashMap<>();
+	private final Map<String, Consumer<FetchyEvent<Node>>> balanceListeners = new ConcurrentHashMap<>();
 
 	private final AtomicInteger balanceListenerId = new AtomicInteger(0);
 
@@ -71,28 +70,28 @@ public class Fetchy implements LifeCycle {
 		return executorService;
 	}
 
-	public void fireDiscover(String name, String serviceId, List<URI> nodes, long elapsedMillis) {
+	public void fireDiscover(String name, String serviceId, List<Node> nodes, long elapsedMillis) {
 		fire(discoverListeners, name, serviceId, null, nodes, elapsedMillis);
 	}
 
-	public void fireBalance(String name, String serviceId, URI node, long elapsedMillis) {
+	public void fireBalance(String name, String serviceId, Node node, long elapsedMillis) {
 		fire(balanceListeners, name, serviceId, node, node, elapsedMillis);
 	}
 
-	public void fireConnect(String name, String serviceId, URI node, Object stub, long elapsedMillis) {
+	public void fireConnect(String name, String serviceId, Node node, Object stub, long elapsedMillis) {
 		fire(connectListeners, name, serviceId, node, stub, elapsedMillis);
 	}
 
-	public void fireRequest(String name, String serviceId, URI node, long elapsedMillis) {
+	public void fireRequest(String name, String serviceId, Node node, long elapsedMillis) {
 		fire(requestListeners, name, serviceId, node, null, elapsedMillis);
 	}
 
-	public void fireError(String name, String serviceId, URI node, Throwable error, long elapsedMillis) {
+	public void fireError(String name, String serviceId, Node node, Throwable error, long elapsedMillis) {
 		fire(errorListeners, name, serviceId, node, error, elapsedMillis);
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void fire(Map listeners, String name, String serviceId, URI node, Object target, long elapsedMillis) {
+	private void fire(Map listeners, String name, String serviceId, Node node, Object target, long elapsedMillis) {
 		getExecutorService().execute(() -> {
 			FetchyEvent<?> event = new FetchyEvent<>(serviceId, name, node, elapsedMillis, target);
 			for (Object entry : listeners.entrySet()) {
@@ -179,7 +178,7 @@ public class Fetchy implements LifeCycle {
 		return (Connector<API>) cons.get(serviceId);
 	}
 
-	public List<URI> discover(String serviceId) {
+	public List<Node> discover(String serviceId) {
 		LOG.debug("Discovering service {}", serviceId);
 		Discoverer discoverer = getServiceDiscoverer(serviceId);
 		if (discoverer == null) {
@@ -188,7 +187,7 @@ public class Fetchy implements LifeCycle {
 		return discoverer.discover(serviceId);
 	}
 
-	public URI balance(String serviceId, List<URI> nodes) {
+	public Node balance(String serviceId, List<Node> nodes) {
 		LOG.debug("Balancing service {} across {} nodes", serviceId, nodes == null ? 0 : nodes.size());
 		Balancer balancer = getServiceBalancer(serviceId);
 		if (balancer == null) {
@@ -197,7 +196,7 @@ public class Fetchy implements LifeCycle {
 		return balancer.balance(nodes);
 	}
 
-	public <API> API connect(String serviceId, URI node) {
+	public <API> API connect(String serviceId, Node node) {
 		LOG.debug("Connecting service {} to node at {}", serviceId, node);
 		Connector<API> connector = getServiceConnector(serviceId);
 		if (connector == null) {
@@ -206,11 +205,11 @@ public class Fetchy implements LifeCycle {
 		return connector.connect(node);
 	}
 
-	public String onDiscover(Consumer<FetchyEvent<List<URI>>> listener) {
+	public String onDiscover(Consumer<FetchyEvent<List<Node>>> listener) {
 		return on("discover", discoverListenerId, discoverListeners, listener);
 	}
 
-	public String onBalance(Consumer<FetchyEvent<URI>> listener) {
+	public String onBalance(Consumer<FetchyEvent<Node>> listener) {
 		return on("balance", balanceListenerId, balanceListeners, listener);
 	}
 

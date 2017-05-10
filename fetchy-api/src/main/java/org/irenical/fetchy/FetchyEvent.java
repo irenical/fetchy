@@ -1,16 +1,14 @@
 package org.irenical.fetchy;
 
-import java.net.URI;
-
 public class FetchyEvent<OBJECT> {
 
 	private final String serviceId;
 	private final String name;
-	private final URI node;
+	private final Node node;
 	private final long elapsedMillis;
 	private final OBJECT target;
 	
-	public FetchyEvent(String serviceId, String name, URI node, long elapsedMillis, OBJECT target) {
+	public FetchyEvent(String serviceId, String name, Node node, long elapsedMillis, OBJECT target) {
 		this.serviceId = serviceId;
 		this.name = name;
 		this.node = node;
@@ -18,7 +16,7 @@ public class FetchyEvent<OBJECT> {
 		this.target = target;
 	}
 	
-	public URI getNode() {
+	public Node getNode() {
 		return node;
 	}
 

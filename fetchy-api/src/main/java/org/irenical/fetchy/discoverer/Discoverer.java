@@ -1,11 +1,12 @@
 package org.irenical.fetchy.discoverer;
 
-import java.net.URI;
+import org.irenical.fetchy.Node;
+
 import java.util.List;
 
 @FunctionalInterface
 public interface Discoverer {
-	
-	List<URI> discover(String serviceId) throws DiscoverException;
+
+    List<Node> discover(String serviceId) throws DiscoverException;
 
 }

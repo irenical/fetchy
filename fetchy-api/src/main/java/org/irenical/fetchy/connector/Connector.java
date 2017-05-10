@@ -1,10 +1,10 @@
 package org.irenical.fetchy.connector;
 
-import java.net.URI;
+import org.irenical.fetchy.Node;
 
 @FunctionalInterface
 public interface Connector<API> {
-	
-	API connect(URI node) throws ConnectException;
-	
+
+    API connect(Node node) throws ConnectException;
+
 }
