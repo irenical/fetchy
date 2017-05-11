@@ -69,7 +69,7 @@ public class TimeoutTest {
 	@Test
 	public void testServiceCallTimein() {
 		CallableRequest<String,RuntimeException> cr = fetchy.createRequest(serviceId, MockService.class)
-				.callable((Call<String,MockService,RuntimeException>) api -> api.getSomething())
+				.callable((Call<String,MockService,RuntimeException>) MockService::getSomething)
 				.timeout(timeout).build();
 		String got = cr.execute();
 		Assert.assertEquals(output, got);
@@ -78,7 +78,7 @@ public class TimeoutTest {
 	@Test(expected=SomethingWrongException.class)
 	public void testServiceCallTimeinError() throws SomethingWrongException {
 		CallableRequest<String,SomethingWrongException> cr = fetchy.createRequest(serviceId, MockService.class)
-				.callable(api -> api.getSomethingWrong())
+				.callable(MockService::getSomethingWrong)
 				.timeout(timeout).build();
 		cr.execute();
 	}
@@ -86,7 +86,7 @@ public class TimeoutTest {
 	@Test(expected=SomethingWrongException.class)
 	public void testServiceRunTimeinError() throws SomethingWrongException {
 		RunnableRequest<SomethingWrongException> cr = fetchy.createRequest(serviceId, MockService.class)
-				.runnable(api -> api.doSomethingWrong())
+				.runnable(MockService::doSomethingWrong)
 				.timeout(timeout).build();
 		cr.execute();
 	}
@@ -94,7 +94,7 @@ public class TimeoutTest {
 	@Test
 	public void testServiceRunTimein() {
 		RunnableRequest<RuntimeException> rr = fetchy.createRequest(serviceId, MockService.class)
-				.runnable((Run<MockService,RuntimeException>) api -> api.doSomething())
+				.runnable((Run<MockService,RuntimeException>) MockService::doSomething)
 			.timeout(timeout).build();
 		rr.execute();
 		Assert.assertTrue(service.ran);

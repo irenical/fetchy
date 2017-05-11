@@ -41,16 +41,6 @@ public class FetchyEngine implements LifeCycle {
 
     private ExecutorService executorService;
 
-    public FetchyEngine() {
-    }
-
-    private synchronized ExecutorService getExecutorService() {
-        if (executorService == null) {
-            executorService = Executors.newCachedThreadPool();
-        }
-        return executorService;
-    }
-
     @Override
     public <ERROR extends Exception> void start() throws ERROR {
         // Do nothing
@@ -60,7 +50,10 @@ public class FetchyEngine implements LifeCycle {
     public <ERROR extends Exception> void stop() throws ERROR {
         if (executorService != null) {
             executorService.shutdown();
+            executorService = null;
         }
+
+        emitter.stop();
     }
 
     @Override
@@ -124,7 +117,7 @@ public class FetchyEngine implements LifeCycle {
             Balancer bal = service.getBalancer();
             if (bal != null) {
                 Node node = bal.balance(nodes);
-                emitter.fire(EVENT_BALANCE, name, serviceId, node, null, TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
+                emitter.fire(EVENT_BALANCE, name, serviceId, node, node, TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
                 return node;
             } else if (nodes != null && !nodes.isEmpty()) {
                 return nodes.get(0);
@@ -173,6 +166,13 @@ public class FetchyEngine implements LifeCycle {
         } else {
             throw (ERROR) error;
         }
+    }
+
+    synchronized ExecutorService getExecutorService() {
+        if (executorService == null) {
+            executorService = Executors.newCachedThreadPool();
+        }
+        return executorService;
     }
 
     public String onDiscover(Consumer<FetchyEvent<List<Node>>> listener) {

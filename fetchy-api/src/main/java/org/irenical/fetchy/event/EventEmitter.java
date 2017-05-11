@@ -1,6 +1,7 @@
 package org.irenical.fetchy.event;
 
 import org.irenical.fetchy.Node;
+import org.irenical.lifecycle.LifeCycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,7 +12,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
-public class EventEmitter {
+public class EventEmitter implements LifeCycle {
 
     private static final Logger LOG = LoggerFactory.getLogger(EventEmitter.class);
 
@@ -74,6 +75,24 @@ public class EventEmitter {
     public void clear() {
         listeners.clear();
         idGenerator.set(0);
+    }
+
+    @Override
+    public <ERROR extends Exception> void start() throws ERROR {
+
+    }
+
+    @Override
+    public <ERROR extends Exception> void stop() throws ERROR {
+        if (executorService != null) {
+            executorService.shutdown();
+            executorService = null;
+        }
+    }
+
+    @Override
+    public <ERROR extends Exception> boolean isRunning() throws ERROR {
+        return true;
     }
 
     private String getEntity(String listenerId) {
