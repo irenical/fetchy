@@ -1,4 +1,6 @@
-package org.irenical.fetchy;
+package org.irenical.fetchy.event;
+
+import org.irenical.fetchy.Node;
 
 public class FetchyEvent<OBJECT> {
 

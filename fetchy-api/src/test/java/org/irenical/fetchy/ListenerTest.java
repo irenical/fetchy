@@ -2,6 +2,7 @@ package org.irenical.fetchy;
 
 import java.util.Arrays;
 
+import org.irenical.fetchy.event.FetchyEvent;
 import org.irenical.fetchy.utils.mock.MockService;
 import org.irenical.fetchy.utils.mock.SomethingWrongException;
 import org.junit.Assert;

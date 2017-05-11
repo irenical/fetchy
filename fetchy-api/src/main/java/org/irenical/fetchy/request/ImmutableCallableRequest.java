@@ -1,36 +1,36 @@
 package org.irenical.fetchy.request;
 
-import org.irenical.fetchy.Fetchy;
+import org.irenical.fetchy.engine.FetchyEngine;
 
 import java.util.concurrent.Callable;
 
 public class ImmutableCallableRequest<OUTPUT, API, ERROR extends Exception> extends ImmutableRequest<OUTPUT, API, ERROR>
-		implements CallableRequest<OUTPUT, ERROR> {
+        implements CallableRequest<OUTPUT, ERROR> {
 
-	private Call<OUTPUT, API, ERROR> callable;
+    private Call<OUTPUT, API, ERROR> callable;
 
-	private CallFallback<OUTPUT> fallback;
+    private CallFallback<OUTPUT> fallback;
 
-	public ImmutableCallableRequest(String name, Fetchy fetchy, String serviceId, Integer timeoutMillis,
+    public ImmutableCallableRequest(String name, FetchyEngine engine, CallServiceDetails<API> service, Integer timeoutMillis,
                                     Call<OUTPUT, API, ERROR> callable, CallFallback<OUTPUT> fallback) {
-		super(name, fetchy, serviceId, timeoutMillis);
-		this.callable = callable;
+        super(name, engine, service, timeoutMillis);
+        this.callable = callable;
 		this.fallback = fallback;
 	}
 
-	@Override
-	public OUTPUT execute() throws ERROR {
-		return request();
-	}
+    @Override
+    public OUTPUT execute() throws ERROR {
+        return request();
+    }
 
-	@Override
-	protected Callable<OUTPUT> getCallable(API api) {
-		return () -> callable.call(api);
-	}
+    @Override
+    public Callable<OUTPUT> getCallable(API api) {
+        return () -> callable.call(api);
+    }
 
-	@Override
-	protected Callable<OUTPUT> getCallableFallback(Throwable error) {
-		return fallback == null ? null : () -> fallback.fallback(error);
-	}
+    @Override
+    public Callable<OUTPUT> getCallableFallback(Throwable error) {
+        return fallback == null ? null : () -> fallback.fallback(error);
+    }
 
 }

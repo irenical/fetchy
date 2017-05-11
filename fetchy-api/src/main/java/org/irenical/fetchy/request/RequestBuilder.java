@@ -1,43 +1,37 @@
 package org.irenical.fetchy.request;
 
-import org.irenical.fetchy.Fetchy;
+import org.irenical.fetchy.engine.FetchyEngine;
 
 public class RequestBuilder<API> {
 
-	private Fetchy fetchy;
+    private final FetchyEngine engine;
 
-	private String serviceId;
-	
-	private String name;
+    private CallServiceDetails<API> serviceDetails;
 
-	public RequestBuilder(Fetchy fetchy) {
-		this.fetchy = fetchy;
-	}
+    private String name;
 
-	public RequestBuilder<API> service(String serviceId) {
-		this.serviceId = serviceId;
-		return this;
-	}
-	
-	public RequestBuilder<API> name(String name) {
-		this.name = name;
-		return this;
-	}
-	
-	public <OUTPUT, ERROR extends Exception> CallableRequestBuilder<OUTPUT, API, ERROR> callable(Call<OUTPUT, API, ERROR> callable) {
-		CallableRequestBuilder<OUTPUT, API, ERROR> result = new CallableRequestBuilder<>(fetchy);
-		result.service(serviceId);
-		result.name(name);
-		result.callable(callable);
-		return result;
-	}
-	
-	public <OUTPUT, ERROR extends Exception> RunnableRequestBuilder<API, ERROR> runnable(Run<API, ERROR> runnable) {
-		RunnableRequestBuilder<API, ERROR> result = new RunnableRequestBuilder<>(fetchy);
-		result.service(serviceId);
-		result.name(name);
-		result.runnable(runnable);
-		return result;
-	}
+    public RequestBuilder(FetchyEngine engine, CallServiceDetails<API> serviceDetails) {
+        this.engine = engine;
+        this.serviceDetails = serviceDetails;
+    }
+
+    public RequestBuilder<API> name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    public <OUTPUT, ERROR extends Exception> CallableRequestBuilder<OUTPUT, API, ERROR> callable(Call<OUTPUT, API, ERROR> callable) {
+        CallableRequestBuilder<OUTPUT, API, ERROR> result = new CallableRequestBuilder<>(engine, serviceDetails);
+        result.name(name);
+        result.callable(callable);
+        return result;
+    }
+
+    public <ERROR extends Exception> RunnableRequestBuilder<API, ERROR> runnable(Run<API, ERROR> runnable) {
+        RunnableRequestBuilder<API, ERROR> result = new RunnableRequestBuilder<>(engine, serviceDetails);
+        result.name(name);
+        result.runnable(runnable);
+        return result;
+    }
 
 }
