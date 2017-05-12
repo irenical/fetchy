@@ -80,4 +80,35 @@ public class EventEmitterTest {
         inOrder.verifyNoMoreInteractions();
 
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddListenerFailsOnMissingEntity() throws Exception {
+        emitter.addListener("", mockConsumer);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAddListenerFailsOnMissingConsumer() throws Exception {
+        emitter.addListener(A_TEST_ENTITY, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRemovingListenerFailsOnMissingId() throws Exception {
+        emitter.removeListener("");
+    }
+
+    @Test
+    public void testClearingAllListeners() throws Exception {
+        Assert.assertEquals(0, emitter.getListenerCount());
+        Assert.assertEquals(0, emitter.getListenerCount(A_TEST_ENTITY));
+
+        emitter.addListener(A_TEST_ENTITY, mockConsumer);
+
+        Assert.assertEquals(1, emitter.getListenerCount());
+        Assert.assertEquals(1, emitter.getListenerCount(A_TEST_ENTITY));
+
+        emitter.clear();
+
+        Assert.assertEquals(0, emitter.getListenerCount());
+        Assert.assertEquals(0, emitter.getListenerCount(A_TEST_ENTITY));
+    }
 }

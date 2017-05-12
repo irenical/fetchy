@@ -31,15 +31,23 @@ public class FetchyEngine implements LifeCycle {
 
     private static final Logger LOG = LoggerFactory.getLogger(FetchyEngine.class);
 
-    private static final String EVENT_DISCOVER = "discover";
-    private static final String EVENT_BALANCE = "balance";
-    private static final String EVENT_CONNECT = "connect";
-    private static final String EVENT_REQUEST = "request";
-    private static final String EVENT_ERROR = "error";
+    static final String EVENT_DISCOVER = "discover";
+    static final String EVENT_BALANCE = "balance";
+    static final String EVENT_CONNECT = "connect";
+    static final String EVENT_REQUEST = "request";
+    static final String EVENT_ERROR = "error";
 
-    private final EventEmitter emitter = new EventEmitter();
+    private final EventEmitter emitter;
 
     private ExecutorService executorService;
+
+    public FetchyEngine() {
+        this(new EventEmitter());
+    }
+
+    public FetchyEngine(EventEmitter emitter) {
+        this.emitter = emitter;
+    }
 
     @Override
     public <ERROR extends Exception> void start() throws ERROR {

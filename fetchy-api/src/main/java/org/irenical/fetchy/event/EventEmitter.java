@@ -84,6 +84,20 @@ public class EventEmitter implements LifeCycle {
         idGenerator.set(0);
     }
 
+    public int getListenerCount() {
+        return listeners.entrySet().stream()
+                .map(entry -> entry.getValue().size())
+                .reduce(0, (a, b) -> a + b);
+    }
+
+    public int getListenerCount(String entity) {
+        if (listeners.containsKey(entity)) {
+            return listeners.get(entity).size();
+        } else {
+            return 0;
+        }
+    }
+
     @Override
     public <ERROR extends Exception> void start() throws ERROR {
 
