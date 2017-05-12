@@ -22,6 +22,13 @@ public class EventEmitter implements LifeCycle {
 
     private ExecutorService executorService;
 
+    public EventEmitter() {
+    }
+
+    public EventEmitter(ExecutorService executorService) {
+        this.executorService = executorService;
+    }
+
     @SuppressWarnings({"rawtypes", "unchecked"})
     public void fire(String entity, String name, String serviceId, Node node, Object target, long elapsedMillis) {
         if (!listeners.containsKey(entity)) {
