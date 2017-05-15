@@ -5,9 +5,9 @@ import org.irenical.fetchy.connector.soap.filter.ServiceClientMTOMFilter;
 
 import javax.xml.ws.Service;
 
-public class SOAPMTOMConnector<ENDPOINT extends Service, PORT> extends SOAPConnector<ENDPOINT, PORT> {
+public class MTOMConnector<ENDPOINT extends Service, PORT> extends SOAPConnector<ENDPOINT, PORT> {
 
-    public SOAPMTOMConnector(Class<ENDPOINT> endpointClass, Class<PORT> portClass) {
+    public MTOMConnector(Class<ENDPOINT> endpointClass, Class<PORT> portClass) {
         super(endpointClass, portClass, new ServiceClientFilter[]{new ServiceClientMTOMFilter()});
     }
 }
