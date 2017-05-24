@@ -16,7 +16,8 @@ public class EventEmitter implements LifeCycle {
 
     private static final Logger LOG = LoggerFactory.getLogger(EventEmitter.class);
 
-    private final Map<String, Map<String, Consumer<FetchyEvent>>> listeners = new ConcurrentHashMap<>();
+    @SuppressWarnings("rawtypes")
+	private final Map<String, Map<String, Consumer<FetchyEvent>>> listeners = new ConcurrentHashMap<>();
 
     private final AtomicInteger idGenerator = new AtomicInteger(0);
 
