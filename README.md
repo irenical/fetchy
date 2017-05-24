@@ -8,68 +8,40 @@ Service discovery API and libraries for Java
 ![alt text][dog]  
 Fetchy, the dog
 
-Registering a factory:
+## Usage
+A trivial service call.
 ```java
-Fetchy fetchy = new Fetchy();
-
-ThriftServiceDiscoveryFactory< < THRIFT_CONTRACT >.Iface, < THRIFT_CONTRACT >.Client> factory =
-  new ThriftServiceDiscoveryFactory<>( "myThriftService", < THRIFT_CONTRACT >.Iface.class, < THRIFT_CONTRACT >.Client.class, "serviceId" );
-
-fetchy.register( factory );
+String outcome = fetchy.call("my-service", MyServiceStub.class, MyServiceStub::getSomething);
+```
+or if you have to do something more with the service endpoint.
+```java
+String outcome = fetchy.call("my-service", MyServiceStub.class, serviceApi -> {
+    String gotThis = serviceApi.getSomething();
+    return gotThis == null ? serviceApi.getSomethingElse() : gotThis;
+  });
 ```
 
-Each factory should define its service node discovery and service node balancer:
+## Setup
+### Registering a service
+### Balancing service nodes
 
-```java
-factory.setServiceNodeDiscovery( serviceNodeDiscovery );
-factory.setServiceNodeBalancer( serviceNodeBalancer );
-```
+## How does it work
 
-Note that the factory, the service discovery and the balancer can all be registered automatically with Java's ServiceLoader.
+## Timeout and fallback behaviours
 
+## Metrics
 
-Usage example:
-```java
-fetchy.find( "myThriftService" ).ifPresent( stub -> {
-  try {
-    < RESULT > result = stub.call(
-        iface -> iface.<METHOD>( < METHOD_PARAMETERS > ) );
-    // ...
-  } catch (Exception e) {
-    e.printStackTrace();
-  }
-});
-
-```
-
-To use Fetchy you need both the API and factories. ServiceNodeBalancer and ServiceNodeDiscovery depends on your factory needs.
-
+## Dependencies
+You'll allways need to include the fetchy's API dependency.
 ```xml
 <dependency>
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy-api</artifactId>
-  <version>0.1.5</version>
-</dependency>
-
-<!-- thrift client implementation -->
-<dependency>
-  <groupId>org.irenical.fetchy</groupId>
-  <artifactId>fetchy-thrift</artifactId>
-  <version>0.1.5</version>
-</dependency>
-<!-- for a consul service discovery implementation -->
-<dependency>
-  <groupId>org.irenical.fetchy</groupId>
-  <artifactId>fetchy-consul</artifactId>
-  <version>0.1.5</version>
-</dependency>
-<!-- for a random service balancer implementation -->
-<dependency>
-  <groupId>org.irenical.fetchy</groupId>
-  <artifactId>fetchy-random</artifactId>
-  <version>0.1.5</version>
+  <version>2.0.0</version>
 </dependency>
 ```
+Then, either use fetchy's discoverers, balancers and connectors or create your own.
+
 
 [dog]:https://www.irenical.org/fetchy/dog.jpg "Here you go. Three green cubes."
 
