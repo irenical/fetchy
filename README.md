@@ -3,7 +3,8 @@
 [![][codecov img]][codecov]
 
 # Fetchy
-Service discovery API and libraries for Java
+Service discovery API and libraries for Java.  
+Interacting with services over network is a common but less than simple endeavour. It usually requires addressing several concerns, namely service discovery, load balancing, fallback on error, timeout handling, auto-retry, circuit breaking, metrics and some kind of protocol-level handling. Fetchy aims at solving from most to all of these, while keeping a simple API, being easy to customize or extend and fully protocol agnostic.
 
 ![alt text][dog]  
 Fetchy, the dog
@@ -20,12 +21,24 @@ String outcome = fetchy.call("my-service", MyServiceStub.class, serviceApi -> {
     return gotThis == null ? serviceApi.getSomethingElse() : gotThis;
   });
 ```
+## Concepts
+Although Fetchy's API design aims at simplicity, in order to effectivelly use it as full-featured protocol-agnostic RPC framework some concepts and their naming must be first clarified.  
+- Discoverer
+- Node
+- Balancer
+- Connector
+- Request
 
 ## Setup
 ### Registering a service
+Before calling a service it must first be registrered in the Fetchy instance. A service is identified by a String and should be at least registered with a Connector.
+
 ### Balancing service nodes
 
+### Connecting to a service node
+
 ## How does it work
+TODO: flow diagram
 
 ## Timeout and fallback behaviours
 
