@@ -23,15 +23,16 @@ String outcome = fetchy.call("my-service", MyServiceStub.class, serviceApi -> {
 ```
 ## Concepts
 Although Fetchy's API design aims at simplicity, in order to effectivelly use it as full-featured protocol-agnostic RPC framework some concepts and their naming must be first clarified.  
-- Discoverer
-- Node
-- Balancer
-- Connector
-- Request
+- Discoverer: a component responsible of finding nodes currently running a specific service
+- Node: a representation of an address where a service instance was found running
+- Balancer: a many-to-one node list reducer, with an arbitrary heuristic.
+- Connector: a component able to return a service stub instance for a given Node
+- Request: A prepared service call, bound to a specific service, node and stub
 
 ## Setup
+
 ### Registering a service
-Before calling a service it must first be registrered in the Fetchy instance. A service is identified by a String and should be at least registered with a Connector.
+Before calling a service, it must first be registrered in a Fetchy instance. A service is identified by a String is usually registered with a  Connector. 
 
 ### Balancing service nodes
 
