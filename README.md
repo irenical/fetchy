@@ -32,11 +32,28 @@ Although Fetchy's API design aims at simplicity, in order to effectivelly use it
 ## Setup
 
 ### Registering a service
-Before calling a service, it must first be registrered in a Fetchy instance. A service is identified by a String is usually registered with a  Connector. 
+Before calling a service, it must first be registrered in a Fetchy instance. A service is identified by a String and is registered with a Connector at least.  
 
-### Balancing service nodes
-
-### Connecting to a service node
+```java
+Fetchy fetchy = new Fetchy();
+fetchy.start();
+fetchy.register("my-service", myDiscoverer, myBalancer, myConnector);
+```
+Altough this project aims to provide several implementations of Connectors, Balancers and Discoverers, you can easily implement your own, using or not Java 8's lambdas. Bellow is an example using Consul for service discovery, a trivial random balancer and a gRPC connector.
+```java
+Fetchy fetchy = new Fetchy();
+fetchy.start();
+fetchy.register("my-leet-microservice",
+    new ConsulDiscoverer(),
+    new RandomBalancer(),
+    new GrpcConnector(channel->MyLeetMicroserviceGrpc::newBlockingStub));
+```
+You can then call this service like so
+```java
+String outcome = fetchy.call("my-leet-microservice",
+    MyLeetMicroserviceBlockingStub.class,
+    MyLeetMicroserviceBlockingStub::getSomething);
+```
 
 ## How does it work
 TODO: flow diagram
