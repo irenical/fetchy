@@ -18,8 +18,6 @@ public class FallbackTest {
 
 	private String serviceId = "serviceId";
 
-	private long timeout = 10000;
-
 	private Fetchy fetchy = new Fetchy();
 
 	@Test(expected = DiscoverException.class)
