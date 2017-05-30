@@ -64,6 +64,7 @@
   <modules>
     <module>fetchy-api</module>
     <module>fetchy-discoverer-consul</module>
+    <module>fetchy-discoverer-jindy</module>
     <module>fetchy-balancer-random</module>
     <module>fetchy-connector-retrofit</module>
     <module>fetchy-connector-jersey2</module>
