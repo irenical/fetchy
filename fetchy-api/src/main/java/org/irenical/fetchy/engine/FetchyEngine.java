@@ -45,9 +45,16 @@ public class FetchyEngine implements LifeCycle {
         this(new EventEmitter());
     }
 
-    public FetchyEngine(EventEmitter emitter) {
+    public FetchyEngine(ExecutorService executorService) {
+        this();
+        this.executorService = executorService;
+    }
+
+    FetchyEngine(EventEmitter emitter) {
         this.emitter = emitter;
     }
+
+
 
     @Override
     public <ERROR extends Exception> void start() throws ERROR {

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 
 public class Fetchy implements LifeCycle {
@@ -30,6 +31,10 @@ public class Fetchy implements LifeCycle {
 
     public Fetchy() {
         engine = new FetchyEngine();
+    }
+
+    public Fetchy( ExecutorService executorService ) {
+        engine = new FetchyEngine( executorService );
     }
 
     @Override
