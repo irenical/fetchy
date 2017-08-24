@@ -10,9 +10,9 @@ public abstract class ImmutableRequest<OUTPUT, API, ERROR extends Exception> {
     private final Integer timeoutMillis;
 
     private final FetchyEngine engine;
-    private final CallServiceDetails<API> serviceDetails;
+    private final RequestServiceDetails<API> serviceDetails;
 
-    public ImmutableRequest(String name, FetchyEngine engine, CallServiceDetails<API> serviceDetails, Integer timeoutMillis) {
+    public ImmutableRequest(String name, FetchyEngine engine, RequestServiceDetails<API> serviceDetails, Integer timeoutMillis) {
         this.name = name;
         this.engine = engine;
         this.serviceDetails = serviceDetails;
@@ -27,7 +27,7 @@ public abstract class ImmutableRequest<OUTPUT, API, ERROR extends Exception> {
         return timeoutMillis;
     }
 
-    public CallServiceDetails<API> getServiceDetails() {
+    public RequestServiceDetails<API> getServiceDetails() {
         return serviceDetails;
     }
 

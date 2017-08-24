@@ -26,7 +26,7 @@ public class FetchyEngineTest {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void testListenersRegistered() throws Exception {
         final Consumer discoverConsumer = mock(Consumer.class);
 

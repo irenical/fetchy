@@ -25,7 +25,8 @@ public class EventEmitterTest {
 
     private EventEmitter emitter;
 
-    @Mock
+    @SuppressWarnings("rawtypes")
+	@Mock
     private Consumer<FetchyEvent> mockConsumer;
 
     @Before
@@ -41,7 +42,8 @@ public class EventEmitterTest {
         emitter = new EventEmitter(mock);
     }
 
-    @Test
+    @SuppressWarnings("rawtypes")
+	@Test
     public void testEventFired() throws Exception {
 
         emitter.addListener(A_TEST_ENTITY, mockConsumer);

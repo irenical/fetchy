@@ -6,17 +6,17 @@ public class CallableRequestBuilder<OUTPUT, API, ERROR extends Exception> {
 
 	private final FetchyEngine engine;
 
-	private CallServiceDetails<API> serviceDetails;
+	private RequestServiceDetails<API> serviceDetails;
 	
 	private String name;
 
 	private Integer timeoutMillis;
 
-	private Call<OUTPUT, API, ERROR> callable;
+	private Call<OUTPUT, API, ?> callable;
 
 	private CallFallback<OUTPUT> fallback;
 
-	public CallableRequestBuilder(FetchyEngine engine, CallServiceDetails<API> serviceDetails) {
+	public CallableRequestBuilder(FetchyEngine engine, RequestServiceDetails<API> serviceDetails) {
 		this.engine = engine;
 		this.serviceDetails = serviceDetails;
 	}
@@ -36,13 +36,17 @@ public class CallableRequestBuilder<OUTPUT, API, ERROR extends Exception> {
 		return this;
 	}
 
-	public CallableRequestBuilder<OUTPUT, API, ERROR> fallback(CallFallback<OUTPUT> fallback) {
-		this.fallback = fallback;
-		return this;
+	public CallableRequestBuilder<OUTPUT, API, RuntimeException> fallback(CallFallback<OUTPUT> fallback) {
+		CallableRequestBuilder<OUTPUT, API, RuntimeException> result = new CallableRequestBuilder<>(engine, serviceDetails);
+		result.name = name;
+		result.timeoutMillis = timeoutMillis;
+		result.callable = callable;
+		result.fallback = fallback;
+		return result;
 	}
 
 	public CallableRequest<OUTPUT, ERROR> build() {
-		return new ImmutableCallableRequest<>(name, engine, serviceDetails, timeoutMillis, callable, fallback);
+		return new ImmutableCallableRequest<OUTPUT, API, ERROR>(name, engine, serviceDetails, timeoutMillis, callable, fallback);
 	}
 
 }

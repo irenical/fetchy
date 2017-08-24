@@ -8,7 +8,7 @@ import org.irenical.fetchy.connector.Stub;
 import org.irenical.fetchy.discoverer.Discoverer;
 import org.irenical.fetchy.event.EventEmitter;
 import org.irenical.fetchy.event.FetchyEvent;
-import org.irenical.fetchy.request.CallServiceDetails;
+import org.irenical.fetchy.request.RequestServiceDetails;
 import org.irenical.fetchy.request.ImmutableRequest;
 import org.irenical.fetchy.request.RequestAbortException;
 import org.irenical.fetchy.request.RequestTimeoutException;
@@ -82,7 +82,7 @@ public class FetchyEngine implements LifeCycle {
         OUTPUT result = null;
         Throwable error = null;
 
-        final CallServiceDetails<API> service = request.getServiceDetails();
+        final RequestServiceDetails<API> service = request.getServiceDetails();
 
         final String serviceId = service.getServiceId();
         final String name = request.getName();
@@ -123,7 +123,7 @@ public class FetchyEngine implements LifeCycle {
         return result;
     }
 
-    private <API> Node attemptDiscover(String name, CallServiceDetails<API> service, long start) {
+    private <API> Node attemptDiscover(String name, RequestServiceDetails<API> service, long start) {
         String serviceId = service.getServiceId();
         Discoverer disco = service.getDiscoverer();
         if (disco != null) {
@@ -141,7 +141,7 @@ public class FetchyEngine implements LifeCycle {
         return null;
     }
 
-    private <API> Stub<API> connect(CallServiceDetails<API> serviceDetails, Node node) {
+    private <API> Stub<API> connect(RequestServiceDetails<API> serviceDetails, Node node) {
         LOG.debug("Connecting service {} to node at {}", serviceDetails.getServiceId(), node);
         Connector<API> connector = serviceDetails.getConnector();
         if (connector == null) {

@@ -4,13 +4,13 @@ import org.irenical.fetchy.balancer.Balancer;
 import org.irenical.fetchy.connector.Connector;
 import org.irenical.fetchy.discoverer.Discoverer;
 
-public class CallServiceDetails<API> {
+public class RequestServiceDetails<API> {
     private String serviceId;
     private Connector<API> connector;
     private Balancer balancer;
     private Discoverer discoverer;
 
-    public CallServiceDetails(String serviceId, Connector<API> connector, Balancer balancer, Discoverer discoverer) {
+    public RequestServiceDetails(String serviceId, Connector<API> connector, Balancer balancer, Discoverer discoverer) {
         this.serviceId = serviceId;
         this.connector = connector;
         this.balancer = balancer;

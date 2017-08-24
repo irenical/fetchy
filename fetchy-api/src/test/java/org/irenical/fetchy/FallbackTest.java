@@ -18,8 +18,6 @@ public class FallbackTest {
 
 	private String serviceId = "serviceId";
 
-	private long timeout = 10000;
-
 	private Fetchy fetchy = new Fetchy();
 
 	@Test(expected = DiscoverException.class)
@@ -43,7 +41,7 @@ public class FallbackTest {
 	}
 
 	@Test
-	public void testFallbackOnDiscoverCall() throws SomethingWrongException {
+	public void testFallbackOnDiscoverCall() {
 		fetchy.registerDiscoverer(serviceId, sid -> {
 			throw new DiscoverException("Blew up");
 		});
@@ -56,7 +54,7 @@ public class FallbackTest {
 	}
 
 	@Test
-	public void testFallbackOnDiscoverRun() throws SomethingWrongException {
+	public void testFallbackOnDiscoverRun() {
 		fetchy.registerDiscoverer(serviceId, sid -> {
 			throw new DiscoverException("Blew up");
 		});
@@ -81,7 +79,7 @@ public class FallbackTest {
 	}
 
 	@Test
-	public void testFallbackOnBalancingCall() throws SomethingWrongException {
+	public void testFallbackOnBalancingCall() {
 		fetchy.registerDiscoverer(serviceId, sid -> null);
 		fetchy.registerBalancer(serviceId, uris -> {
 			throw new BalanceException("Blew up");
@@ -105,7 +103,7 @@ public class FallbackTest {
 	}
 
 	@Test
-	public void testFallbackOnConnectCall() throws SomethingWrongException {
+	public void testFallbackOnConnectCall() {
 		fetchy.registerDiscoverer(serviceId, sid -> null);
 		fetchy.registerBalancer(serviceId, uris -> null);
 		fetchy.registerConnector(serviceId, uri -> {
@@ -133,7 +131,7 @@ public class FallbackTest {
 	}
 
 	@Test
-	public void testFallbackOnServiceCall() throws SomethingWrongException {
+	public void testFallbackOnServiceCall() {
 		fetchy.registerDiscoverer(serviceId, sid -> null);
 		fetchy.registerBalancer(serviceId, uris -> null);
 		fetchy.registerConnector(serviceId, uri -> () -> new MockService(output));
@@ -143,7 +141,7 @@ public class FallbackTest {
 	}
 
 	@Test
-	public void testFallbackOnServiceRun() throws SomethingWrongException {
+	public void testFallbackOnServiceRun() {
 		fetchy.registerDiscoverer(serviceId, sid -> null);
 		fetchy.registerBalancer(serviceId, uris -> null);
 		fetchy.registerConnector(serviceId, uri -> () -> new MockService(output));
@@ -154,7 +152,7 @@ public class FallbackTest {
 	}
 
 	@Test(expected = SomethingWrongException.class)
-	public void testFallbackErrorOnServiceRun() throws SomethingWrongException {
+	public void testFallbackErrorOnServiceRun() {
 		fetchy.registerDiscoverer(serviceId, sid -> null);
 		fetchy.registerBalancer(serviceId, uris -> null);
 		fetchy.registerConnector(serviceId, uri -> () -> new MockService(output));
