@@ -24,8 +24,7 @@ public class RequestBuilder<API> {
     }
 
     public <ERROR extends Exception> RunnableRequestBuilder<API, ERROR> runnable(Run<API, ERROR> runnable) {
-        RunnableRequestBuilder<API, ERROR> result = new RunnableRequestBuilder<>(engine, serviceDetails);
-        result.name(name);
+        RunnableRequestBuilder<API, ERROR> result = new RunnableRequestBuilder<>(engine, serviceDetails, name);
         result.runnable(runnable);
         return result;
     }

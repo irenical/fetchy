@@ -7,12 +7,12 @@ import java.util.concurrent.Callable;
 public class ImmutableRunnableRequest<API, ERROR extends Exception> extends ImmutableRequest<Void, API, ERROR>
         implements RunnableRequest<ERROR> {
 
-    private Run<API, ERROR> runnable;
+    private Run<API, ?> runnable;
 
     private RunFallback fallback;
 
     public ImmutableRunnableRequest(String name, FetchyEngine engine, RequestServiceDetails<API> service, Integer timeoutMillis,
-                                    Run<API, ERROR> runnable, RunFallback fallback) {
+                                    Run<API, ?> runnable, RunFallback fallback) {
         super(name, engine, service, timeoutMillis);
         this.runnable = runnable;
         this.fallback = fallback;
