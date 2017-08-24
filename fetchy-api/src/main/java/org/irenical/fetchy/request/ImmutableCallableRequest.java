@@ -15,8 +15,8 @@ public class ImmutableCallableRequest<OUTPUT, API, ERROR extends Exception> exte
                                     Call<OUTPUT, API, ?> callable, CallFallback<OUTPUT> fallback) {
         super(name, engine, service, timeoutMillis);
         this.callable = callable;
-		this.fallback = fallback;
-	}
+        this.fallback = fallback;
+    }
 
     @Override
     public OUTPUT execute() throws ERROR {

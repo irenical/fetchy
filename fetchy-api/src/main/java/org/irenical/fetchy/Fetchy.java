@@ -6,8 +6,8 @@ import org.irenical.fetchy.discoverer.Discoverer;
 import org.irenical.fetchy.engine.FetchyEngine;
 import org.irenical.fetchy.event.FetchyEvent;
 import org.irenical.fetchy.request.Call;
-import org.irenical.fetchy.request.RequestServiceDetails;
 import org.irenical.fetchy.request.RequestBuilder;
+import org.irenical.fetchy.request.RequestServiceDetails;
 import org.irenical.fetchy.request.Run;
 import org.irenical.lifecycle.LifeCycle;
 import org.slf4j.Logger;
@@ -33,8 +33,8 @@ public class Fetchy implements LifeCycle {
         engine = new FetchyEngine();
     }
 
-    public Fetchy( ExecutorService executorService ) {
-        engine = new FetchyEngine( executorService );
+    public Fetchy(ExecutorService executorService) {
+        engine = new FetchyEngine(executorService);
     }
 
     @Override
@@ -166,5 +166,5 @@ public class Fetchy implements LifeCycle {
                 getServiceDiscoverer(serviceId)
         );
     }
-    
+
 }

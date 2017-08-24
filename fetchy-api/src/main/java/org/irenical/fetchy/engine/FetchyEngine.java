@@ -8,9 +8,9 @@ import org.irenical.fetchy.connector.Stub;
 import org.irenical.fetchy.discoverer.Discoverer;
 import org.irenical.fetchy.event.EventEmitter;
 import org.irenical.fetchy.event.FetchyEvent;
-import org.irenical.fetchy.request.RequestServiceDetails;
 import org.irenical.fetchy.request.ImmutableRequest;
 import org.irenical.fetchy.request.RequestAbortException;
+import org.irenical.fetchy.request.RequestServiceDetails;
 import org.irenical.fetchy.request.RequestTimeoutException;
 import org.irenical.lifecycle.LifeCycle;
 import org.slf4j.Logger;
@@ -53,7 +53,6 @@ public class FetchyEngine implements LifeCycle {
     FetchyEngine(EventEmitter emitter) {
         this.emitter = emitter;
     }
-
 
 
     @Override

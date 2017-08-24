@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface Balancer {
 
-	Node balance(List<Node> nodes) throws BalanceException;
+    Node balance(List<Node> nodes) throws BalanceException;
 
 }

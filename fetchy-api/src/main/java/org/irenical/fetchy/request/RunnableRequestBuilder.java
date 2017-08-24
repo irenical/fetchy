@@ -5,11 +5,11 @@ import org.irenical.fetchy.engine.FetchyEngine;
 public class RunnableRequestBuilder<API, ERROR extends Exception> {
 
     private final FetchyEngine engine;
-    
+
     private final RequestServiceDetails<API> serviceDetails;
 
     private final String name;
-    
+
     private Integer timeoutMillis;
 
     private Run<API, ?> runnable;
@@ -26,7 +26,7 @@ public class RunnableRequestBuilder<API, ERROR extends Exception> {
         this.timeoutMillis = timeoutMillis;
         return this;
     }
-    
+
     public RunnableRequestBuilder<API, ERROR> runnable(Run<API, ERROR> lambda) {
         this.runnable = lambda;
         return this;
@@ -41,7 +41,7 @@ public class RunnableRequestBuilder<API, ERROR extends Exception> {
     }
 
     public RunnableRequest<ERROR> build() {
-        return new ImmutableRunnableRequest<API,ERROR>(name, engine, serviceDetails, timeoutMillis, runnable, fallback);
+        return new ImmutableRunnableRequest<API, ERROR>(name, engine, serviceDetails, timeoutMillis, runnable, fallback);
     }
 
 }
