@@ -21,7 +21,7 @@
 	</developers>
 
 	<properties>
-		<retrofit.version>2.1.0</retrofit.version>
+		<retrofit.version>2.3.0</retrofit.version>
 	</properties>
 
 	<dependencies>
