@@ -41,12 +41,13 @@ public class FallbackTest {
 	}
 
 	@Test
-	public void testFallbackOnDiscoverCall() throws SomethingWrongException {
+	public void testFallbackOnDiscoverCall() {
 		fetchy.registerDiscoverer(serviceId, sid -> {
 			throw new DiscoverException("Blew up");
 		});
 		fetchy.registerConnector(serviceId, uri -> () -> new MockService(output));
 
+		// by setting up a fallback method, checked exceptions should disappear
 		String got = fetchy.createRequest(serviceId, MockService.class).callable(MockService::getSomethingWrong)
 				.fallback(e -> fallbackOutput).build().execute();
 

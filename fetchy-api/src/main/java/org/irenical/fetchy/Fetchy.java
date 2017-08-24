@@ -6,7 +6,7 @@ import org.irenical.fetchy.discoverer.Discoverer;
 import org.irenical.fetchy.engine.FetchyEngine;
 import org.irenical.fetchy.event.FetchyEvent;
 import org.irenical.fetchy.request.Call;
-import org.irenical.fetchy.request.CallServiceDetails;
+import org.irenical.fetchy.request.RequestServiceDetails;
 import org.irenical.fetchy.request.RequestBuilder;
 import org.irenical.fetchy.request.Run;
 import org.irenical.lifecycle.LifeCycle;
@@ -153,16 +153,18 @@ public class Fetchy implements LifeCycle {
     }
 
     public <API> RequestBuilder<API> createRequest(String serviceId, String requestName, Class<API> apiClass) {
-        RequestBuilder<API> result = new RequestBuilder<>(engine, resolve(serviceId, apiClass));
-        return result.name(requestName == null ? "request@" + serviceId : requestName);
+        return new RequestBuilder<API>(engine,
+                resolve(serviceId, apiClass),
+                requestName == null ? "request@" + serviceId : requestName);
     }
 
-    private <API> CallServiceDetails<API> resolve(String serviceId, Class<API> apiClass) {
-        return new CallServiceDetails<>(
+    private <API> RequestServiceDetails<API> resolve(String serviceId, Class<API> apiClass) {
+        return new RequestServiceDetails<>(
                 serviceId,
                 getServiceConnector(serviceId),
                 getServiceBalancer(serviceId),
                 getServiceDiscoverer(serviceId)
         );
     }
+    
 }

@@ -6,18 +6,14 @@ public class RequestBuilder<API> {
 
     private final FetchyEngine engine;
 
-    private CallServiceDetails<API> serviceDetails;
+    private final RequestServiceDetails<API> serviceDetails;
 
-    private String name;
+    private final String name;
 
-    public RequestBuilder(FetchyEngine engine, CallServiceDetails<API> serviceDetails) {
+    public RequestBuilder(FetchyEngine engine, RequestServiceDetails<API> serviceDetails, String name) {
         this.engine = engine;
         this.serviceDetails = serviceDetails;
-    }
-
-    public RequestBuilder<API> name(String name) {
         this.name = name;
-        return this;
     }
 
     public <OUTPUT, ERROR extends Exception> CallableRequestBuilder<OUTPUT, API, ERROR> callable(Call<OUTPUT, API, ERROR> callable) {
