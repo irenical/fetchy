@@ -1,5 +1,8 @@
 package org.irenical.fetchy.connector.thrift;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.function.Function;
+
 import org.apache.thrift.TServiceClient;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
@@ -12,25 +15,79 @@ import org.irenical.fetchy.connector.ConnectException;
 import org.irenical.fetchy.connector.Connector;
 import org.irenical.fetchy.connector.Stub;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 public class ThriftConnector<IFACE, CLIENT extends IFACE> implements Connector<CLIENT> {
 
-  private final Class<CLIENT> clientType;
+  private static final Function<Node, TTransport> defaultTransportBuilder = node -> new TFramedTransport(
+      new TSocket(node.getAddress(), node.getPort()));
+
+  private static final Function<TTransport, TProtocol> defaultProtocolBuilder = transport -> new TBinaryProtocol(
+      transport);
+
+  private final Function<TProtocol, CLIENT> defaultClientBuilder;
+
+  private Function<Node, TTransport> transportBuilder;
+
+  private Function<TTransport, TProtocol> protocolBuilder;
+
+  private Function<TProtocol, CLIENT> clientBuilder;
 
   public ThriftConnector(Class<CLIENT> clientType) {
-    this.clientType = clientType;
+    this(clientType, null, null, null);
+  }
+
+  public ThriftConnector(Class<CLIENT> clientType, Function<Node, TTransport> transportBuilder,
+      Function<TTransport, TProtocol> protocolBuilder, Function<TProtocol, CLIENT> clientBuilder) {
+    this.defaultClientBuilder = createDefaultClientBuilder(clientType);
+    this.transportBuilder = transportBuilder;
+    this.protocolBuilder = protocolBuilder;
+    this.clientBuilder = clientBuilder;
+  }
+
+  private static <CLIENT> Function<TProtocol, CLIENT> createDefaultClientBuilder(Class<CLIENT> clientType) {
+    return protocol -> {
+      try {
+        return clientType.getConstructor(TProtocol.class).newInstance(protocol);
+      } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+          | NoSuchMethodException | SecurityException e) {
+        throw new ConnectException("Error running default client builder", e);
+      }
+    };
+  }
+
+  public ThriftConnector<IFACE, CLIENT> withTransportBuilder(Function<Node, TTransport> transportBuilder) {
+    this.transportBuilder = transportBuilder;
+    return this;
+  }
+
+  public Function<Node, TTransport> getTransportBuilder() {
+    return transportBuilder;
+  }
+
+  public ThriftConnector<IFACE, CLIENT> withProtocolBuilder(Function<TTransport, TProtocol> protocolBuilder) {
+    this.protocolBuilder = protocolBuilder;
+    return this;
+  }
+
+  public Function<TTransport, TProtocol> getProtocolBuilder() {
+    return protocolBuilder;
+  }
+
+  public ThriftConnector<IFACE, CLIENT> withClientBuilder(Function<TProtocol, CLIENT> clientBuilder) {
+    this.clientBuilder = clientBuilder;
+    return this;
+  }
+
+  public Function<TProtocol, CLIENT> getClientBuilder() {
+    return clientBuilder;
   }
 
   @Override
   public Stub<CLIENT> connect(Node node) throws ConnectException {
     try {
-      TTransport tTransport = new TFramedTransport(new TSocket(node.getAddress(), node.getPort()));
-      TProtocol protocol = new TBinaryProtocol(tTransport);
-      Constructor<CLIENT> constructor = clientType.getConstructor(TProtocol.class);
-      CLIENT client = constructor.newInstance(protocol);
-
+      TTransport tTransport = transportBuilder == null ? defaultTransportBuilder.apply(node) : transportBuilder.apply(node);
+      TProtocol protocol = protocolBuilder == null ? defaultProtocolBuilder.apply(tTransport) : protocolBuilder.apply(tTransport);
+      CLIENT client = clientBuilder == null ? defaultClientBuilder.apply(protocol) : clientBuilder.apply(protocol);
+      
       return new Stub<CLIENT>() {
         @Override
         public CLIENT get() {
@@ -51,8 +108,8 @@ public class ThriftConnector<IFACE, CLIENT extends IFACE> implements Connector<C
           close(client);
         }
       };
-    } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
-      throw new ConnectException(e.getLocalizedMessage(), e);
+    } catch (Exception e) {
+      throw (e instanceof ConnectException) ? (ConnectException) e : new ConnectException(e.getLocalizedMessage(), e);
     }
   }
 
