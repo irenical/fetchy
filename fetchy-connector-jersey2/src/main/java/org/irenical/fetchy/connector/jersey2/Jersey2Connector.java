@@ -11,6 +11,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
+import java.util.function.Consumer;
 
 public class Jersey2Connector implements Connector<WebTarget>, LifeCycle {
 
@@ -18,12 +19,32 @@ public class Jersey2Connector implements Connector<WebTarget>, LifeCycle {
 
   private boolean isRunning = false;
 
+  private Consumer<ClientBuilder> clientConfigurator;
+
+  public Jersey2Connector() {
+    this( null );
+  }
+
+  public Jersey2Connector(Consumer<ClientBuilder> clientConfigurator) {
+    this.clientConfigurator = clientConfigurator;
+  }
+
+  public Jersey2Connector withClientConfigurator(Consumer<ClientBuilder> clientConfigurator) {
+    this.clientConfigurator = clientConfigurator;
+    return this;
+  }
+
   @Override
   public Stub<WebTarget> connect(Node node) throws ConnectException {
     if (client == null) {
-      client = ClientBuilder.newBuilder()
-          .register(JacksonFeature.class)
-          .build();
+      ClientBuilder builder = ClientBuilder.newBuilder();
+      builder.register(JacksonFeature.class);
+
+      if (clientConfigurator != null) {
+        clientConfigurator.accept( builder );
+      }
+
+      client = builder.build();
     }
 
     UriBuilder uriBuilder = UriBuilder.fromUri(node.getAddress());
