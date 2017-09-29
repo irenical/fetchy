@@ -1,5 +1,16 @@
 package org.irenical.fetchy.engine;
 
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Consumer;
+
 import org.irenical.fetchy.Node;
 import org.irenical.fetchy.balancer.Balancer;
 import org.irenical.fetchy.connector.Connector;
@@ -15,17 +26,6 @@ import org.irenical.fetchy.request.RequestTimeoutException;
 import org.irenical.lifecycle.LifeCycle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
-import java.util.function.Consumer;
 
 public class FetchyEngine implements LifeCycle {
 
@@ -99,7 +99,7 @@ public class FetchyEngine implements LifeCycle {
                 result = doRequest(api, callable);
             }
             emitter.fire(EVENT_REQUEST, name, serviceId, node, null, TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - start));
-        } catch (Exception e) {
+        } catch (Throwable e) {
             boolean raise = true;
             error = determineError(e);
             Callable<OUTPUT> fallback = request.getCallableFallback(error);
@@ -159,7 +159,7 @@ public class FetchyEngine implements LifeCycle {
         }
     }
 
-    private Throwable determineError(Exception e) {
+    private Throwable determineError(Throwable e) {
         Throwable error;
         if (e instanceof ExecutionException) {
             error = e.getCause();
@@ -174,7 +174,7 @@ public class FetchyEngine implements LifeCycle {
     }
 
     @SuppressWarnings("unchecked")
-    private <ERROR extends Exception> void throwError(Throwable error) throws ERROR {
+    private <ERROR extends Throwable> void throwError(Throwable error) throws ERROR {
         if (error instanceof RuntimeException) {
             throw (RuntimeException) error;
         } else {
