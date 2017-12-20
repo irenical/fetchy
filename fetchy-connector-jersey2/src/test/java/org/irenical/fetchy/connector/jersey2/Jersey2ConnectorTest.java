@@ -1,6 +1,5 @@
 package org.irenical.fetchy.connector.jersey2;
 
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.irenical.fetchy.Node;
 import org.irenical.fetchy.connector.Stub;
 import org.junit.Assert;
@@ -19,9 +18,10 @@ public class Jersey2ConnectorTest {
     public void testNoClientConfigurator() throws Exception {
         Jersey2Connector connector = new Jersey2Connector();
 
-        Stub<WebTarget> connect = connector.connect(new Node( "localhost", 1337 ) );
+        Stub<WebTarget> connect = connector.connect(new Node( "http://localhost", 1337 ) );
 
-        Assert.assertTrue( connect.get().getConfiguration().isRegistered( JacksonFeature.class ) );
+        Assert.assertEquals( "localhost", connect.get().getUri().getHost() );
+        Assert.assertEquals( 1337, connect.get().getUri().getPort() );
     }
 
     @Test

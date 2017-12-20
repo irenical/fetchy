@@ -1,6 +1,5 @@
 package org.irenical.fetchy.connector.jersey2;
 
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.irenical.fetchy.Node;
 import org.irenical.fetchy.connector.ConnectException;
 import org.irenical.fetchy.connector.Connector;
@@ -38,7 +37,6 @@ public class Jersey2Connector implements Connector<WebTarget>, LifeCycle {
   public Stub<WebTarget> connect(Node node) throws ConnectException {
     if (client == null) {
       ClientBuilder builder = ClientBuilder.newBuilder();
-      builder.register(JacksonFeature.class);
 
       if (clientConfigurator != null) {
         clientConfigurator.accept( builder );
