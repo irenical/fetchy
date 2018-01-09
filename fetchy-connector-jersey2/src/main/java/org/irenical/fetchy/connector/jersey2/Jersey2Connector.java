@@ -14,6 +14,8 @@ import java.util.function.Consumer;
 
 public class Jersey2Connector implements Connector<WebTarget>, LifeCycle {
 
+  static final String DEFAULT_SCHEME = "http";
+
   private Client client;
 
   private boolean isRunning = false;
@@ -45,7 +47,13 @@ public class Jersey2Connector implements Connector<WebTarget>, LifeCycle {
       client = builder.build();
     }
 
-    UriBuilder uriBuilder = UriBuilder.fromUri(node.getAddress());
+    UriBuilder uriBuilder;
+
+    if (node.getAddress().matches("(\\w+)?\\:?\\/\\/.*")) {
+      uriBuilder = UriBuilder.fromUri(node.getAddress());
+    } else {
+      uriBuilder = UriBuilder.fromUri(DEFAULT_SCHEME + "://" + node.getAddress());
+    }
 
     if (node.getPort() != null) {
       uriBuilder = uriBuilder.port(node.getPort());

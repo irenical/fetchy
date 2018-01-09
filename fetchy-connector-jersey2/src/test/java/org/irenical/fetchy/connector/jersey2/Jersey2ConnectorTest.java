@@ -18,8 +18,9 @@ public class Jersey2ConnectorTest {
     public void testNoClientConfigurator() throws Exception {
         Jersey2Connector connector = new Jersey2Connector();
 
-        Stub<WebTarget> connect = connector.connect(new Node( "http://localhost", 1337 ) );
+        Stub<WebTarget> connect = connector.connect(new Node( "https://localhost", 1337 ) );
 
+        Assert.assertEquals( "https", connect.get().getUri().getScheme() );
         Assert.assertEquals( "localhost", connect.get().getUri().getHost() );
         Assert.assertEquals( 1337, connect.get().getUri().getPort() );
     }
@@ -43,4 +44,14 @@ public class Jersey2ConnectorTest {
         Mockito.verify( clientConfiguratorSpy, times( 1 ) ).accept( Mockito.any() );
     }
 
+    @Test
+    public void testWithMissingProtocolInAddress() {
+      Jersey2Connector connector = new Jersey2Connector();
+
+      Stub<WebTarget> connect = connector.connect(new Node( "localhost", 1337 ) );
+
+      Assert.assertEquals( Jersey2Connector.DEFAULT_SCHEME, connect.get().getUri().getScheme() );
+      Assert.assertEquals( "localhost", connect.get().getUri().getHost() );
+      Assert.assertEquals( 1337, connect.get().getUri().getPort() );
+    }
 }
