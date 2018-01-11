@@ -9,7 +9,7 @@
 
   <groupId>org.irenical.fetchy</groupId>
   <artifactId>fetchy</artifactId>
-  <version>2.0.12-SNAPSHOT</version>
+  <version>2.0.12</version>
 
   <name>Fetchy</name>
 
@@ -19,7 +19,7 @@
     <connection>scm:git:git@github.com:irenical/fetchy.git</connection>
     <developerConnection>scm:git:git@github.com:irenical/fetchy.git</developerConnection>
     <url>git@github.com:irenical/fetchy.git</url>
-    <tag>HEAD</tag>
+    <tag>fetchy-2.0.12</tag>
   </scm>
 
   <developers>
